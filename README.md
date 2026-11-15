@@ -1,18 +1,17 @@
 <div align="center">
-  <h1>Kahera</h1>
+  <h1>Kahera POS</h1>
   <p><a href="README.es.md">Español</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.tr.md">Türkçe</a> · <a href="README.fil.md">Filipino</a> · <a href="README.de.md">Deutsch</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ar.md">العربية</a> · <a href="README.ur.md">اردو</a></p>
   <p><strong>Free, open-source, offline-first point of sale for cafés, restaurants, and small kitchens.</strong></p>
   <p>
-    <a href="https://kaherapos.com">Website</a> ·
-    <a href="https://github.com/FreeOpenSourcePOS/Kahera/releases">Download</a> ·
-    <a href="https://github.com/FreeOpenSourcePOS/Kahera/issues">Report a bug</a>
+    <a href="https://github.com/capzuuu/kahera">GitHub Repository</a> ·
+    <a href="README.demo.md">Coffee Shop Demo Guide</a> ·
+    <a href="README.run.md">Quick Start</a>
   </p>
   <p>
-    <a href="https://github.com/FreeOpenSourcePOS/Kahera/releases"><img src="https://img.shields.io/github/v/release/FreeOpenSourcePOS/Kahera?label=latest%20release" alt="Latest release"></a>
-    <a href="https://github.com/FreeOpenSourcePOS/Kahera/releases"><img src="https://img.shields.io/github/downloads/FreeOpenSourcePOS/Kahera/total?label=release%20downloads" alt="Total release downloads"></a>
-    <a href="https://github.com/FreeOpenSourcePOS/Kahera/blob/main/LICENSE"><img src="https://img.shields.io/github/license/FreeOpenSourcePOS/Kahera" alt="MIT License"></a>
+    <a href="https://github.com/capzuuu/kahera/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="MIT License"></a>
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue" alt="Windows, macOS, and Linux">
-    <a href="https://github.com/FreeOpenSourcePOS/Kahera/actions/workflows/ci.yml"><img src="https://github.com/FreeOpenSourcePOS/Kahera/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+    <img src="https://img.shields.io/badge/offline--first-SQLite-orange" alt="Offline-First SQLite">
+    <img src="https://img.shields.io/badge/status-production--ready-brightgreen" alt="Production Ready">
   </p>
 </div>
 
@@ -20,7 +19,20 @@
   <img src="docs/images/kahera-pos.webp" alt="Kahera POS screen showing product selection and an active dine-in order" width="100%">
 </p>
 
-Kahera runs directly on the business's own computer. Orders, customers, receipts, and backups are stored in a local SQLite database, allowing counter service and kitchen displays to continue operating without an internet connection. No hosted or cloud account is required for core POS operation. Optional integrations—such as Google Drive backup, WhatsApp bill delivery, and cloud-connected reporting—can be enabled when needed.
+Kahera runs directly on the business's own computer. Orders, customers, receipts, and backups are stored in a local SQLite database, allowing counter service and kitchen displays to continue operating without an internet connection. No hosted or cloud account is required for core POS operation. Optional integrations—such as Google Drive backup and cloud-connected reporting—can be enabled when needed.
+
+## Quick Start for Demo & Marketing
+
+If you are demonstrating Kahera POS or recording a promotional video:
+
+- 🎬 **Video Storyboard & Demo Guide:** Check out [README.demo.md](README.demo.md) for the complete, step-by-step coffee shop operation flow (Recipe Setup ➔ Stock Inflow ➔ Opening Cash Float ➔ POS Ring Up ➔ Real-time Barista KDS ➔ Petty Cash ➔ Day-Close Z-Report).
+- 🚀 **Quick Commands:** See [README.run.md](README.run.md) for startup commands:
+  ```sh
+  npm install
+  npm run dev          # Launch full desktop POS + KDS + Server app
+  npm run db:truncate # Reset database to clean install state anytime
+  npm run build:win   # Build Windows installer (release/Kahera-Setup.exe)
+  ```
 
 ## Get Kahera
 
@@ -213,7 +225,7 @@ Core POS operation and local data are offline-first. Order entry, billing, KDS c
 
 - **Data location:** The SQLite database and local backups reside in the operating system user-data directory, separate from installed application binaries. Standard in-place application updates do not remove them. As a best practice, create a manual backup before reinstalling, moving to a new machine, or changing distribution channels.
 - **Pre-migration backups:** Kahera automatically creates a timestamped database backup before running schema migrations.
-- **Optional network features:** Services such as Google Drive backups, WhatsApp bill delivery, and cloud reporting communicate over the network only when explicitly configured and enabled by the store owner.
+- **Optional network features:** Services such as Google Drive backups and cloud reporting communicate over the network only when explicitly configured and enabled by the store owner.
 
 ## Languages and regional support
 
@@ -408,8 +420,8 @@ For pack authoring, validation, and schema details, see the [Tax packs developer
 Setting up a local development environment requires Node.js 22 or later:
 
 ```sh
-git clone https://github.com/FreeOpenSourcePOS/Kahera.git
-cd Kahera
+git clone https://github.com/capzuuu/kahera.git
+cd kahera
 npm install
 npm run dev
 ```
