@@ -24,7 +24,7 @@ import * as path from 'node:path';
 // Stub `electron` with isPackaged: true and an isolated per-run temp userData
 // dir (same pattern as tests/issue-127-password-recovery.test.ts). This test
 // inserts rows into whatsapp_messages and never cleans them up, so pointing
-// getDbPath() at the shared dev-root flo.db (what _electron-stub.cjs's
+// getDbPath() at the shared dev-root kahera.db (what _electron-stub.cjs's
 // isPackaged: false would do) makes the rate-limit assertion flaky across
 // repeated local runs.
 const Module = require('module');

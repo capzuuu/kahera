@@ -1,11 +1,11 @@
-# FloCafe documentation
+# Kahera documentation
 
 `docs/` describes the current supported system: how it is put together, what contracts it holds,
 and how to perform a recurring task against it. It does not preserve development history. Plans,
 research notes, audits, verification transcripts, and future proposals live in issues, pull
 requests, and git history.
 
-**Current code and tests define what FloCafe does.** Existing documentation is research material,
+**Current code and tests define what Kahera does.** Existing documentation is research material,
 not authority. When code and documentation disagree, the code wins and the documentation is wrong.
 Before writing a behavioral claim, verify it against the code, the tests, or the configuration.
 
@@ -106,5 +106,5 @@ metadata. Do not move them without a coordinated change to those references.
 
 ## Other repository assets
 
-- [`images/flo-cafe-pos.webp`](images/flo-cafe-pos.webp): the POS screenshot used in `README.md`
+- [`images/kahera-pos.webp`](images/kahera-pos.webp): the POS screenshot used in `README.md`
   and in the Linux AppStream metadata. Do not move it.

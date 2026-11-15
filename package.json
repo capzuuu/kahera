@@ -1,7 +1,8 @@
 {
   "name": "flo-desktop",
+  "productName": "Kahera",
   "version": "3.13.61",
-  "description": "Free, open-source, offline-first restaurant POS with KDS, SQLite, and thermal printer support.",
+  "description": "Kahera - Free, open-source, offline-first restaurant POS with KDS, SQLite, and thermal printer support.",
   "engines": {
     "node": ">=22.12.0"
   },
@@ -35,16 +36,17 @@
     "docs:demo": "node scripts/docs/demo-server.cjs",
     "docs:screenshots": "node scripts/docs/capture-screenshots.cjs",
     "build:frontend": "node scripts/build-frontend.cjs",
+    "db:truncate": "node scripts/truncate-db.cjs",
     "showcase:record": "node scripts/demo/record-showcase.cjs",
     "showcase:verify": "node scripts/demo/verify-showcase.cjs",
     "build:all-platforms": "npm run build:frontend && npm run build && electron-builder --win --mac --linux",
-    "postinstall": "install-electron && electron-builder install-app-deps && npm run verify:electron && node scripts/prepare-snap-build.cjs",
+    "postinstall": "node node_modules/electron/install.js && npm run verify:electron && node scripts/prepare-snap-build.cjs",
     "prepare": "node .husky/install.mjs",
     "verify:electron": "node scripts/verify-electron-runtime.cjs",
     "verify:release-artifacts": "node scripts/assert-release-artifact-names.cjs",
     "changelog": "npx --yes git-cliff@2.8.0 --unreleased",
     "changelog:generate": "npx --yes git-cliff@2.8.0 --prepend CHANGELOG.md",
-    "build:win": "npm run build:frontend && npm run build && electron-builder --win",
+    "build:win": "npm run build:frontend && npm run build && electron-builder --win nsis --x64 --config.npmRebuild=false",
     "build:appx": "npm run build:frontend && npm run build && electron-builder --win appx --x64 --arm64 --config.npmRebuild=false",
     "build:mac": "npm run build:frontend && npm run build && electron-builder --mac",
     "build:mas": "MAS_BUILD=1 npm run build:frontend && MAS_BUILD=1 npm run build && MAS_BUILD=1 electron-builder --mac mas --universal --publish never",
@@ -370,8 +372,8 @@
     "test:printer-text-size": "ts-node --transpile-only -P tests/tsconfig.json tests/printer-text-size.test.ts && node tests/run-electron-node-test.cjs tests/migration-printer-text-size.test.ts"
   },
   "author": {
-    "name": "Flo",
-    "email": "support@flo.local"
+    "name": "Kahera",
+    "email": "support@kahera.local"
   },
   "homepage": "https://flopos.com",
   "repository": {
@@ -455,7 +457,8 @@
   },
   "build": {
     "appId": "com.flo.desktop",
-    "productName": "Flo Cafe",
+    "productName": "Kahera",
+    "npmRebuild": false,
     "icon": "assets/icon-512.png",
     "afterPack": "scripts/afterPack.js",
     "asar": true,
@@ -504,7 +507,7 @@
         }
       ],
       "icon": "assets/icon.ico",
-      "artifactName": "flocafe-${version}-win-${arch}.${ext}"
+      "artifactName": "Kahera-Setup.${ext}"
     },
     "appx": {
       "applicationId": "FloCafe",
@@ -512,7 +515,7 @@
       "publisherDisplayName": "Codify Apps Private Limited",
       "identityName": "CodifyAppsPrivateLimited.FloCafe",
       "publisher": "CN=34AFD24D-EC88-44B8-B309-08BB8A6BB5F7",
-      "displayName": "Flo Cafe",
+      "displayName": "Kahera",
       "languages": [
         "en-US"
       ]
@@ -544,7 +547,7 @@
       "notarize": true,
       "artifactName": "flocafe-${version}-mac-${arch}.${ext}",
       "extendInfo": {
-        "NSLocalNetworkUsageDescription": "Flo Cafe connects to thermal printers, KDS displays, and the Waiter & Table Terminal on your local network.",
+        "NSLocalNetworkUsageDescription": "Kahera connects to thermal printers, KDS displays, and the Waiter & Table Terminal on your local network.",
         "NSBonjourServices": [
           "_http._tcp",
           "_pdl-datastream._tcp",
@@ -565,7 +568,7 @@
       "type": "distribution",
       "extendInfo": {
         "ITSAppUsesNonExemptEncryption": false,
-        "NSLocalNetworkUsageDescription": "Flo Cafe connects to thermal printers, KDS displays, and the Waiter & Table Terminal on your local network.",
+        "NSLocalNetworkUsageDescription": "Kahera connects to thermal printers, KDS displays, and the Waiter & Table Terminal on your local network.",
         "NSBonjourServices": [
           "_http._tcp",
           "_pdl-datastream._tcp",
@@ -586,7 +589,7 @@
     },
     "linux": {
       "synopsis": "Self-hosted Point of Sale for cafes and restaurants",
-      "description": "Flo is a free, open-source point-of-sale system for cafes, restaurants, and small kitchens. Local-first, offline-capable, no cloud lock-in, no per-seat fees.",
+      "description": "Kahera is a free, open-source point-of-sale system for cafes, restaurants, and small kitchens. Local-first, offline-capable, no cloud lock-in, no per-seat fees.",
       "target": [
         {
           "target": "AppImage",
@@ -623,17 +626,13 @@
       "artifactName": "flocafe-${version}-linux.${ext}",
       "extraFiles": [
         {
-          "from": "assets/com.flo.desktop.metainfo.xml",
-          "to": "usr/share/metainfo/com.flo.desktop.metainfo.xml"
-        },
-        {
-          "from": "assets/icons",
-          "to": "usr/share/icons"
+          "from": "assets/com.kahera.desktop.metainfo.xml",
+          "to": "usr/share/metainfo/com.kahera.desktop.metainfo.xml"
         }
       ],
       "desktop": {
         "entry": {
-          "Name": "Flo Cafe",
+          "Name": "Kahera",
           "Comment": "Free, open-source POS for cafes and restaurants",
           "GenericName": "Point of Sale",
           "Keywords": "pos;point of sale;restaurant;cafe;billing;invoice;",
@@ -675,7 +674,9 @@
       "oneClick": false,
       "allowToChangeInstallationDirectory": true,
       "createDesktopShortcut": true,
-      "createStartMenuShortcut": true
+      "createStartMenuShortcut": true,
+      "artifactName": "Kahera-Setup.${ext}",
+      "shortcutName": "Kahera"
     }
   },
   "allowScripts": {

@@ -25,7 +25,7 @@ A pack is a data object conforming to `schemaVersion: 1`.
 | `effectiveFrom` | `string` | A parseable date. |
 | `effectiveTo` | `string` | Optional; must be at or after `effectiveFrom`. |
 | `publishedAt` | `string` | |
-| `minFloVersion` | `string` | Minimum FloCafe version that may activate it. |
+| `minFloVersion` | `string` | Minimum Kahera version that may activate it. |
 | `taxPoint` | `'order_created' \| 'finalized_at'` | Declared, but nothing reads it. |
 | `inclusivePricingDefault` | `boolean` | |
 | `registrationNumberLabel` | `string` | Merchant-facing label. |
@@ -93,7 +93,7 @@ interface CountryTaxPackPluginArtifact {
 ```
 
 Despite the name, the artifact carries no plugin code. `printTemplates` is a list of declarative
-`escpos-line-template-v1` templates rendered by FloCafe code; see
+`escpos-line-template-v1` templates rendered by Kahera code; see
 [print templates compliance](print-templates-compliance.md). The templates are data, validated on
 install by `validateTemplateChargeRows()` and `validateTemplateLabelsMap()` in
 [`main/tax-packs/catalog.ts`](../../main/tax-packs/catalog.ts), and persisted to
@@ -109,14 +109,14 @@ distributed and verified as one unit.
 first. The steps run in this order; each is a hard gate.
 
 1. **Catalog fetch.** `fetchRemoteTaxPackCatalog()` pages the GitHub Releases API for
-   `FreeOpenSourcePOS/FloCafe-Plugins`, 100 per page, at most `MAX_RELEASE_PAGES` (10) pages. A
+   `FreeOpenSourcePOS/Kahera-Plugins`, 100 per page, at most `MAX_RELEASE_PAGES` (10) pages. A
    request that exceeds `MAX_CATALOG_BYTES` (1,000,000) is rejected.
 2. **Release filter.** Draft releases are skipped, and a release is considered only when its tag
    matches `^tax-pack-[a-z0-9][a-z0-9-]*-v\d+\.\d+\.\d+$`. A `catalog.json` asset is then located
    on that release.
 3. **Download URL guard.** `trustedReleaseDownloadUrl()` accepts a URL only when the protocol is
    `https`, the host is exactly `github.com`, there are no embedded credentials, and the path
-   starts with `/FreeOpenSourcePOS/FloCafe-Plugins/releases/download/`.
+   starts with `/FreeOpenSourcePOS/Kahera-Plugins/releases/download/`.
 4. **Size caps.** The pack artifact is capped at `MAX_PACK_BYTES` (2,000,000) and the detached
    signature at `MAX_SIGNATURE_BYTES` (4,096).
 5. **Digest.** The SHA-256 of the pack JSON must equal the catalog entry's `digest`.
@@ -161,8 +161,8 @@ supplies. It rounds document GST to cents using half-up rounding. See IRAS guida
 [hotel and F&B treatment](https://www.iras.gov.sg/taxes/goods-services-tax-%28gst%29/specific-business-sectors/hotel-and-food-beverage),
 and [GST registration numbers on invoices](https://www.iras.gov.sg/taxes/goods-services-tax-%28gst%29/basics-of-gst/invoicing-price-display-and-record-keeping/invoicing-customers).
 
-A JSON source file in FloCafe does not make a pack bundled or available in the public catalog. The
-catalog contains only signed releases that have been published in FloCafe-Plugins.
+A JSON source file in Kahera does not make a pack bundled or available in the public catalog. The
+catalog contains only signed releases that have been published in Kahera-Plugins.
 
 There is one trusted signing public key, in
 [`main/tax-packs/trusted-signing-key.ts`](../../main/tax-packs/trusted-signing-key.ts).

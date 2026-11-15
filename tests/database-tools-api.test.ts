@@ -3257,7 +3257,7 @@ async function runTests() {
     );
 
     // The core "locked-out owner" guarantee: the Master PIN survives a full DB wipe
-    // because it lives outside flo.db entirely.
+    // because it lives outside kahera.db entirely.
     assert(isMasterPinSet(), 'master-pin.enc still exists after the database was wiped');
     assert(
       verifyMasterPin('1234'),

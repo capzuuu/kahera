@@ -135,7 +135,7 @@ Lifecycle rules before and at release:
 
 ## Multi-counter ordering (create here, pay there)
 
-FloCafe supports owner-configured multi-counter ordering (`multi_counter_enabled`, disabled by
+Kahera supports owner-configured multi-counter ordering (`multi_counter_enabled`, disabled by
 default). In this workflow, separate physical terminals act as ordering stations, payment cashiers,
 or combined stations:
 

@@ -9,12 +9,12 @@
  *   - First-run/setup sanity (owner after setup, required settings, PRAGMA user_version)
  *
  * NOTE: This is a diagnostic utility, not an automated test. It audits
- * whatever flo.db exists on disk and always exits 0 when no DB is found.
+ * whatever kahera.db exists on disk and always exits 0 when no DB is found.
  * Run manually to check database health, not as part of npm test.
  *
  * Usage:
  *   npm run audit:db
- *   FLO_DB=/path/to/flo.db npm run audit:db
+ *   FLO_DB=/path/to/kahera.db npm run audit:db
  */
 
 import { DatabaseSync } from 'node:sqlite';
@@ -26,10 +26,10 @@ type Database = InstanceType<typeof DatabaseSync>;
 
 const candidatePaths = [
   process.env.FLO_DB,
-  path.join(os.homedir(), 'Sites/flo.db'),
-  path.join(os.homedir(), 'Library/Application Support/Flo/flo.db'),
-  path.join(process.cwd(), 'flo.db'),
-  path.join(process.cwd(), '..', 'flo.db'),
+  path.join(os.homedir(), 'Sites/kahera.db'),
+  path.join(os.homedir(), 'Library/Application Support/Flo/kahera.db'),
+  path.join(process.cwd(), 'kahera.db'),
+  path.join(process.cwd(), '..', 'kahera.db'),
 ].filter(Boolean) as string[];
 
 console.log('🔍 FloDesktop DB Integrity Audit');
@@ -44,7 +44,7 @@ for (const p of candidatePaths) {
 }
 
 if (targets.length === 0) {
-  console.log('\n⚠️  No non-empty flo.db file found — skipping audit.');
+  console.log('\n⚠️  No non-empty kahera.db file found — skipping audit.');
   console.log('   Checked:');
   for (const p of candidatePaths) console.log('     - ' + p);
   console.log('\n   This is expected in CI or fresh installs.');

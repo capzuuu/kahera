@@ -2,7 +2,7 @@
 
 This guide describes how to capture automated browser flows and transcode
 production-ready media assets (GIFs, MP4 videos, and poster frames) used in
-FloCafe documentation and website showcases.
+Kahera documentation and website showcases.
 
 ## Overview
 
@@ -65,7 +65,7 @@ The script automatically:
 4. Boots the Express API, KDS server, and Server App.
 5. Launches headless Chromium, navigates each flow, and injects a smooth cursor.
 6. Encodes optimized GIFs, H.264 MP4s, and JPEG posters into `docs/assets/showcase/`
-   (and copies them to the website showcase directory when `WEBSITE_SHOWCASE_DIR` is set or a sibling `flopos.com-showcase` checkout exists).
+   (and copies them to the website showcase directory when `WEBSITE_SHOWCASE_DIR` is set or a sibling `kaherapos.com-showcase` checkout exists).
 7. Shuts down background servers and cleans up browser contexts.
 
 ## Media encoding constraints

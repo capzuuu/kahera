@@ -65,7 +65,7 @@ if (reached !== capVersion) {
 }
 
   fs.mkdirSync(path.dirname(outPath), { recursive: true });
-  fs.copyFileSync(path.join(outDir, 'flo.db'), outPath);
+  fs.copyFileSync(path.join(outDir, 'kahera.db'), outPath);
   console.log(`Fixture written to ${outPath} (schema v${reached}, ${fs.statSync(outPath).size} bytes)`);
 } finally {
   try { dbModule?.closeDatabase(); } catch { /* best effort */ }

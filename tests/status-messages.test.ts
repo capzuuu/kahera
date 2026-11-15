@@ -55,7 +55,7 @@ assert.equal(resolveStatusLanguage('zh-CN'), 'zh');
 assert.equal(resolveStatusLanguage('tl-PH'), 'fil');
 assert.equal(resolveStatusLanguage('xx'), 'en');
 assert.equal(resolveStatusLanguage(null), 'en');
-assert.equal(getStatusMessage('starting', 'unknown')[0], 'Starting Flo');
+assert.equal(getStatusMessage('starting', 'unknown')[0], 'Starting Kahera');
 
 assert.equal(
   shouldQuitOnAllWindowsClosed('win32', false, true),

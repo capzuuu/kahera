@@ -242,7 +242,7 @@ const ME_ENDPOINT = '/auth/me';
 const ORDERS_ENDPOINT = '/kitchen/orders';
 const ITEM_STATUS_ENDPOINT = '/order-items/:itemId/status';
 const VIEW_ENDPOINT = '/kds/view';
-const KDS_AUTH_BLOCKED_KEY = 'flocafe:kds-auth-blocked';
+const KDS_AUTH_BLOCKED_KEY = 'kahera:kds-auth-blocked';
 
 function isKdsAuthBlocked(): boolean {
   try {

@@ -657,22 +657,6 @@ export const SETTINGS_SEARCH_CATALOG: readonly SettingsSearchEntry[] = [
     ],
   },
   {
-    id: 'whatsapp-sharing',
-    tab: 'receipts-printers',
-    groupLabelKey: 'navGroupGeneral',
-    tabLabelKey: 'tabPrinters',
-    titleKey: 'whatsappSharing',
-    hintKey: 'enableWhatsappShareHint',
-    extraKeys: ['enableWhatsappShare', 'enableWhatsapp', 'enableWhatsappHint'],
-    keywords: [
-      'whatsapp sharing',
-      'share bill on whatsapp',
-      'send bill via whatsapp',
-      'whatsapp receipt',
-      'digital bill',
-    ],
-  },
-  {
     id: 'bill-template',
     tab: 'receipts-printers',
     groupLabelKey: 'navGroupGeneral',
@@ -1319,30 +1303,6 @@ export const SETTINGS_SEARCH_CATALOG: readonly SettingsSearchEntry[] = [
     ],
   },
 
-  // ─── Operations: WhatsApp ──────────────────────────────────────────────────
-  {
-    id: 'whatsapp-integration',
-    tab: 'whatsapp',
-    groupLabelKey: 'navGroupOperations',
-    tabLabelKey: 'tabWhatsapp',
-    titleKey: 'whatsapp',
-    hintKey: 'enableWhatsappHint',
-    extraKeys: ['tabWhatsapp', 'enableWhatsapp'],
-    keywords: [
-      'whatsapp',
-      'whatsapp integration',
-      'whatsapp delivery',
-      'whatsapp automation',
-      'broadcast',
-      'message templates',
-      'blocklist',
-      'connect whatsapp phone',
-      'pair whatsapp',
-      'z-report whatsapp',
-      'auto receipt whatsapp',
-    ],
-  },
-
   // ─── Operations: QR Menu (canManageQrMenu) ─────────────────────────────────
   {
     id: 'qr-menu-publish',
@@ -1926,6 +1886,8 @@ export const SETTINGS_SEARCH_CATALOG: readonly SettingsSearchEntry[] = [
     keywords: [
       'about',
       'about flocafe',
+      'about kahera',
+      'kahera',
       'flopos',
       'open source',
       'github',

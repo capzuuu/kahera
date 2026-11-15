@@ -294,6 +294,10 @@ export const usePrinterStore = create<PrinterState>()(
 
       printBill: async (bill, tenant, opts, reservedWindow) => {
         set({ lastError: null });
+        if (!usePosSettingsStore.getState().printerEnabled) {
+          if (reservedWindow && !reservedWindow.closed) reservedWindow.close();
+          return [];
+        }
         let windowTransferred = false;
         let activeConnectionType = 'unknown';
         const authTenantIdAtStart = useAuthStore.getState().currentTenant?.id ?? null;
@@ -790,6 +794,9 @@ export const usePrinterStore = create<PrinterState>()(
 
       printKot: async (order, opts) => {
         set({ lastError: null });
+        if (!usePosSettingsStore.getState().printerEnabled) {
+          return [];
+        }
         let activeConnectionType = 'unknown';
         const authTenantIdAtStart = useAuthStore.getState().currentTenant?.id ?? null;
         const isSameTenant = () =>
@@ -1046,6 +1053,9 @@ export const usePrinterStore = create<PrinterState>()(
 
       printDeliverySlip: async (order, contact, opts) => {
         set({ lastError: null });
+        if (!usePosSettingsStore.getState().printerEnabled) {
+          return [];
+        }
         const initialPrinter = get().hardwarePrinter;
         let reservedPopup: Window | null = null;
         const initialTenant = useAuthStore.getState().currentTenant;

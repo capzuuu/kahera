@@ -722,7 +722,7 @@ export function useCashClose() {
     whatsAppCashCloseId: whatsAppReportType === 'z' ? closedZ?.id : undefined,
     openWhatsAppReport,
     sendWhatsAppReport,
-    canSendWhatsApp: currentTenant?.permission_ids?.includes('whatsapp.use') === true,
+    canSendWhatsApp: false,
     canViewSettings: currentTenant?.permission_ids?.includes('settings.view') === true,
     whatsappCountry: currentTenant?.country ?? '',
   };

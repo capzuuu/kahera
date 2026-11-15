@@ -1,8 +1,8 @@
 # Compliance print templates (`escpos-line-template-v1`)
 
-A signed country tax pack can ship a declarative receipt template that renders through FloCafe's
+A signed country tax pack can ship a declarative receipt template that renders through Kahera's
 built-in ESC/POS line renderer, `escposLineTemplateV1Lines` in `main/printers/thermal.ts`, under
-the renderer id `flocafe-thermal-receipt-template`. The template is data: FloCafe validates it,
+the renderer id `kahera-thermal-receipt-template`. The template is data: Kahera validates it,
 selects a width profile, and renders it with its own code. Nothing in a pack is executed. See
 [data-only tax packs](../decisions/0004-data-only-tax-packs.md) for why that boundary exists.
 
@@ -24,7 +24,7 @@ different data. Do not model merchant features on this contract.
 | `totals.showTaxRegistrationNumber` | string | no | `when_tax_present_or_enabled`, or the default visibility rule. |
 | `footer.defaultMessage` | string | no | Author footer, used when no configured footer note applies. |
 | `footer.useConfiguredFooterNote` | boolean | no | Prefer the merchant's configured footer note. Defaults on. |
-| `footer.includePoweredByFloPOS` | boolean | no | Append the FloPOS branding footer. Defaults on. |
+| `footer.includePoweredByKahera POS` | boolean | no | Append the Kahera POS branding footer. Defaults on. |
 | `labels` | object | no | Optional map of semantic label id to override string. See below. |
 
 Unknown fields are tolerated at render time, so a pack that carries a newer field still renders on
@@ -115,13 +115,13 @@ sorts them ascending. `selectTemplateWidthProfile()` then picks, in order:
 2. The largest profile narrower than the printer, so a template authored at 42 columns still
    renders on 48-column hardware without being stretched.
 3. No profile match: render with the printer's own width and an empty layout, and push a
-   `bill_template_width` warning naming the requested width. FloCafe does not squeeze a wider
+   `bill_template_width` warning naming the requested width. Kahera does not squeeze a wider
    authored profile into a narrower printer.
 
 ## Renderer gate
 
 `renderPluginReceipt()` refuses any installed template whose `renderer.id` is not
-`flocafe-thermal-receipt-template`, whose `renderer.version` is not 1, or whose payload `format` is
+`kahera-thermal-receipt-template`, whose `renderer.version` is not 1, or whose payload `format` is
 not `escpos-line-template-v1`. Anything else throws rather than falling through to a different
 renderer, so a malformed pack fails loudly instead of printing a receipt with a layout nobody
 reviewed.

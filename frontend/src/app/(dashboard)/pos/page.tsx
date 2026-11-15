@@ -282,6 +282,7 @@ export default function POSPage() {
   const cart = useCartStore();
   const heldOrders = useHeldOrdersStore();
   const {
+    printerEnabled,
     customerMandatory,
     autoPrintKot,
     autoPrintBill,
@@ -1214,6 +1215,7 @@ export default function POSPage() {
   const shouldTakePaymentNow = billingIsPrepaid;
 
   const printKotIfEnabled = async (order: Order, originContext?: SupportErrorContextSnapshot) => {
+    if (!printerEnabled) return;
     const origin = originContext || readLiveSupportContext();
     if (order.release_status && order.release_status !== 'released') return;
     if (!checkSessionCurrent(origin)) {
@@ -1339,7 +1341,7 @@ export default function POSPage() {
     originContext?: SupportErrorContextSnapshot,
   ) => {
     const origin = originContext || readLiveSupportContext();
-    if (!currentTenant || !checkSessionCurrent(origin) || (!force && !autoPrintBill)) {
+    if (!printerEnabled || !currentTenant || !checkSessionCurrent(origin) || (!force && !autoPrintBill)) {
       if (reservedWindow && !reservedWindow.closed) reservedWindow.close();
       return;
     }

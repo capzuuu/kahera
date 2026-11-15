@@ -1,6 +1,6 @@
 {
-  "name": "Flo",
-  "short_name": "Flo",
+  "name": "Kahera",
+  "short_name": "Kahera",
   "description": "Smart Point of Sale for restaurants, salons, and retail",
   "start_url": "/dashboard",
   "display": "standalone",

@@ -51,7 +51,7 @@ const POLICY_RULES = [
   {
     id: 'branch-name',
     // Lookbehind keeps URL paths (`.../docs/tutorials/...`) out; the lookahead
-    // keeps repository paths (`docs/images/flo-cafe-pos.webp`) out.
+    // keeps repository paths (`docs/images/kahera-pos.webp`) out.
     pattern: /(?<![/\w.-])\b(feat|fix|docs|refactor|chore|fm)\/[a-z0-9-]+(?![\w-]*[/.])/,
     allow: ['guides/adding-a-language.md', 'guides/adding-a-tax-pack.md'],
   },

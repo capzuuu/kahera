@@ -138,7 +138,7 @@ async function openWindow(alwaysOnTop: boolean, page: string): Promise<void> {
     center: true,
     show: false,
     alwaysOnTop,
-    title: 'Flo',
+    title: 'Kahera',
     webPreferences: { sandbox: true, contextIsolation: true, nodeIntegration: false },
   });
   statusWindow = window;

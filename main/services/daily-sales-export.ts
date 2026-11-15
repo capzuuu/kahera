@@ -1877,7 +1877,7 @@ export function serializeDailySalesExportHtml(
   const businessName =
     (options?.businessName !== undefined
       ? options.businessName
-      : (getSettingValue('business_name') ?? '')) || 'FloCafe';
+      : (getSettingValue('business_name') ?? '')) || 'Kahera';
   const numberingSystem = resolvedPrefs.digits === 'latin' ? 'latn' : undefined;
 
   const fmtMoney = (amount: number | null | undefined): string => {
@@ -2393,7 +2393,7 @@ export function formatDailySalesWhatsAppMessage(
           } catch {
             return '';
           }
-        })()) || 'FloCafe';
+        })()) || 'Kahera';
   const numberingSystem = resolvedPrefs.digits === 'latin' ? 'latn' : undefined;
 
   const fmtMoney = (amount: number): string =>

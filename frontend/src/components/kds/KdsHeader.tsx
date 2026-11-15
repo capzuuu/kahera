@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useSyncExternalStore } from 'react';
-import { ChefHat, KeyRound, LogOut, Moon, Sun, Wifi, WifiOff } from 'lucide-react';
+import { Grid3X3, KeyRound, LogOut, Moon, Sun, Wifi, WifiOff } from 'lucide-react';
 import { useTranslations } from 'use-intl';
 import type { ConnectionMode } from '@/hooks/useKdsConnection';
 import type { KdsViewMode } from '@/hooks/useKdsView';
@@ -77,7 +77,7 @@ export function KdsHeader({
   return (
     <div className="shrink-0 mb-4">
       <div className="flex items-center gap-3 mb-3">
-        <ChefHat size={24} className="text-brand dark:text-indigo-300" />
+        <Grid3X3 size={24} className="text-brand dark:text-indigo-300" />
         <div>
           <h1 className="text-xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-xs text-slate-700 dark:text-slate-300">

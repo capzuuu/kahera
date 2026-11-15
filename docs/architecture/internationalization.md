@@ -1,6 +1,6 @@
 # Internationalization
 
-FloCafe supports 32 UI languages. This page describes how a language is declared, loaded, and
+Kahera supports 32 UI languages. This page describes how a language is declared, loaded, and
 validated, and how the UI language stays separate from a store's regional settings.
 
 ## Source of truth and the parity rule

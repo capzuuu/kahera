@@ -196,16 +196,26 @@ export function CheckoutPaymentStation({
         <div
           data-testid="checkout-change-slot"
           className={cn(
-            'flex h-10 items-center justify-between rounded-lg border px-3 text-sm sm:h-11 [@media(max-height:660px)]:h-9',
+            'flex h-11 items-center justify-between rounded-lg border px-3.5 text-base sm:h-12 [@media(max-height:660px)]:h-10',
             changeDisplay.visible
-              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
-              : 'border-border/50 bg-muted/15 text-muted-foreground',
+              ? 'border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300'
+              : 'border-border bg-muted/30 text-foreground',
           )}
         >
-          <span className={cn('text-xs font-medium', !changeDisplay.visible && 'opacity-70')}>
+          <span
+            className={cn(
+              'text-sm font-semibold sm:text-base',
+              !changeDisplay.visible && 'text-foreground/85',
+            )}
+          >
             {changeDisplay.label}
           </span>
-          <span className={cn('font-bold tabular-nums', !changeDisplay.visible && 'opacity-50')}>
+          <span
+            className={cn(
+              'text-base font-bold tabular-nums sm:text-lg',
+              !changeDisplay.visible && 'text-foreground',
+            )}
+          >
             {changeDisplay.formattedAmount}
           </span>
         </div>

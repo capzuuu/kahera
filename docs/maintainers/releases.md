@@ -1,6 +1,6 @@
 # Desktop releases
 
-FloCafe desktop releases use one electron-builder pipeline and publish to GitHub Releases for
+Kahera desktop releases use one electron-builder pipeline and publish to GitHub Releases for
 Windows (NSIS), macOS (DMG and ZIP), and Linux (AppImage, deb, rpm, Snap). AppX and Mac App Store
 packages are produced by the same tag build and uploaded as GitHub release assets; they are not
 consumed by `electron-updater` and are not submitted to their stores by this pipeline. Snap Store
@@ -89,7 +89,7 @@ Each Linux, macOS, and Windows build step runs `npm run sourcemaps:posthog`
 (`scripts/posthog-sourcemaps.cjs`) between the builds and `electron-builder`. When the
 `POSTHOG_CLI_API_KEY` secret and the `POSTHOG_CLI_PROJECT_ID` variable are both set, the renderer
 export is built with browser source maps, and the script injects chunk ids into `frontend/out` and
-`dist`, uploads their maps as release `flocafe` at the `package.json` version, and deletes the
+`dist`, uploads their maps as release `kahera` at the `package.json` version, and deletes the
 `.js.map` files so they do not ship. The upload uses `--release-mode symbol-set`, so each uploaded
 symbol set is bound to that release; the default `event` mode leaves them unbound.
 `POSTHOG_CLI_HOST` defaults to `https://eu.posthog.com`.
@@ -113,9 +113,9 @@ names and no substitutes.
 
 | Platform | Artifact names, where `<version>` is the release version                                                                                                                                                                                                                                                   |
 | -------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Windows  | `flocafe-<version>-win-x64.exe`, `flocafe-<version>-win-x64.exe.blockmap`, `flocafe-<version>-win-x64.appx`, `flocafe-<version>-win-arm64.appx`                                                                                                                                                            |
-| macOS    | `flocafe-<version>-mac-x64.dmg`, `flocafe-<version>-mac-arm64.dmg`, `flocafe-<version>-mac-x64.zip`, `flocafe-<version>-mac-arm64.zip`, `flocafe-<version>-mac-x64.zip.blockmap`, `flocafe-<version>-mac-arm64.zip.blockmap`                                                                               |
-| Linux    | `flocafe-<version>-linux-x64.appimage`, `flocafe-<version>-linux-arm64.appimage`, `flocafe-<version>-linux-x64.deb`, `flocafe-<version>-linux-arm64.deb`, `flocafe-<version>-linux-x64.rpm`, `flocafe-<version>-linux-arm64.rpm`, `flocafe-<version>-linux-x64.snap`, `flocafe-<version>-linux-arm64.snap` |
+| Windows  | `kahera-<version>-win-x64.exe`, `kahera-<version>-win-x64.exe.blockmap`, `kahera-<version>-win-x64.appx`, `kahera-<version>-win-arm64.appx`                                                                                                                                                            |
+| macOS    | `kahera-<version>-mac-x64.dmg`, `kahera-<version>-mac-arm64.dmg`, `kahera-<version>-mac-x64.zip`, `kahera-<version>-mac-arm64.zip`, `kahera-<version>-mac-x64.zip.blockmap`, `kahera-<version>-mac-arm64.zip.blockmap`                                                                               |
+| Linux    | `kahera-<version>-linux-x64.appimage`, `kahera-<version>-linux-arm64.appimage`, `kahera-<version>-linux-x64.deb`, `kahera-<version>-linux-arm64.deb`, `kahera-<version>-linux-x64.rpm`, `kahera-<version>-linux-arm64.rpm`, `kahera-<version>-linux-x64.snap`, `kahera-<version>-linux-arm64.snap` |
 
 Plus the two uninstaller scripts `uninstall-macos.sh` and `uninstall-windows.ps1`.
 
@@ -125,7 +125,7 @@ verification. [`scripts/assert-release-artifact-names.cjs`](../../scripts/assert
 filename in `release/` to match `[a-z0-9.-]+`.
 
 Older releases, before the naming contract was enforced, used the electron-builder spellings, such
-as `flocafe-3.3.0-x86_64.AppImage`. The upgrade matrix falls back to those names when fetching a
+as `kahera-3.3.0-x86_64.AppImage`. The upgrade matrix falls back to those names when fetching a
 release N, but nothing produces them today.
 
 ## Promotion to GitHub Latest
@@ -181,7 +181,7 @@ observe.
 ## Manual pre-release QA
 
 CI covers Chromium in Electron and the packaged desktop app. The standalone server app on port
-`3003` is the one surface FloCafe does not control the runtime for: staff reach it from whatever
+`3003` is the one surface Kahera does not control the runtime for: staff reach it from whatever
 browser their device has. Before promoting a stable release, check it on:
 
 - **Safari on iOS**, current major version.

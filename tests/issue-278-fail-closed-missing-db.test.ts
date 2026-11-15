@@ -66,7 +66,7 @@ async function run() {
 
     // 3. The disposable E2E db-path override bypasses the guard entirely,
     //    same as it bypasses getDbPath()'s normal production resolution.
-    const e2eDbPath = path.join(testDir, 'e2e-flo.db');
+    const e2eDbPath = path.join(testDir, 'e2e-kahera.db');
     process.env.FLO_E2E_DB_PATH = e2eDbPath;
     try {
       initDatabase();

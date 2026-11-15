@@ -126,12 +126,6 @@ export function CashCloseModal({ model }: { model: CashCloseModel }) {
           <FileText size={14} />
           {t('exportPdf')}
         </DropdownMenuItem>
-        {canSendWhatsApp && (report === 'x' ? xReport : closedZ) && (
-          <DropdownMenuItem onSelect={() => openWhatsAppReport(report)}>
-            <MessageCircle size={14} className="text-emerald-500" />
-            {t('sendViaWhatsApp')}
-          </DropdownMenuItem>
-        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -612,19 +606,6 @@ export function CashCloseModal({ model }: { model: CashCloseModel }) {
               <>
                 <div className="flex items-center gap-2">
                   {exportMenu('z')}
-                  {canSendWhatsApp && (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      size="icon"
-                      aria-label={t('sendViaWhatsApp')}
-                      title={t('sendViaWhatsApp')}
-                      disabled={!closedZ}
-                      onClick={() => openWhatsAppReport('z')}
-                    >
-                      <MessageCircle size={16} className="text-emerald-500" />
-                    </Button>
-                  )}
                 </div>
                 <Button variant="outline" onClick={() => setCloseOpen(false)}>
                   {tCommon('close')}

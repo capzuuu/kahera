@@ -163,7 +163,7 @@ async function runTests() {
     encryptionAvailable = true;
   }
 
-  // Now actually set a Master PIN for this install (independent of flo.db —
+  // Now actually set a Master PIN for this install (independent of kahera.db —
   // exactly like a real install, this can be done without an active session).
   setMasterPin('1234');
   assert(isMasterPinSet(), 'Master PIN is set on disk for the remaining tests');

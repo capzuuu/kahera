@@ -11,7 +11,7 @@ const { execFileSync } = require('node:child_process');
 const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..');
-const META_FILE = path.join(ROOT, 'assets/com.flo.desktop.metainfo.xml');
+const META_FILE = path.join(ROOT, 'assets/com.kahera.desktop.metainfo.xml');
 const NOTES_HELPER = path.join(ROOT, 'scripts/changelog-notes.sh');
 
 const pkg = JSON.parse(readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
@@ -36,12 +36,12 @@ if (!notes) {
     try {
       notes = execFileSync(NOTES_HELPER, [version.split('-')[0]], { encoding: 'utf8' }).trim();
     } catch (_e2) {
-      notes = `Flo Cafe ${version}`;
+      notes = `Kahera ${version}`;
     }
   }
 }
 if (!notes) {
-  notes = `Flo Cafe ${version}`;
+  notes = `Kahera ${version}`;
 }
 notes = notes
   .trim()

@@ -52,7 +52,7 @@ async function main() {
 
   try {
     initDatabase();
-    const dbPath = path.join(testDir, 'flo.db');
+    const dbPath = path.join(testDir, 'kahera.db');
     const backupPath = path.join(testDir, 'test-backup.db');
 
     // Create a valid same-schema backup to test restores

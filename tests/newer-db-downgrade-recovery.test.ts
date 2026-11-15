@@ -153,7 +153,7 @@ function buildActiveNewerWalDatabase(
   newerAppVersion: string,
 ): { dbSha: string; walSha: string; shmSha: string } {
   const stageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'flo-newer-wal-stage-'));
-  const stageDbPath = path.join(stageDir, 'flo.db');
+  const stageDbPath = path.join(stageDir, 'kahera.db');
   fs.copyFileSync(baseTemplatePath, stageDbPath);
 
   let writerDb: Database.Database | undefined;
@@ -209,7 +209,7 @@ function buildActiveHotJournalDatabase(
   },
 ): { dbSha: string; journalSha: string } {
   const stageDir = fs.mkdtempSync(path.join(os.tmpdir(), 'flo-hot-journal-stage-'));
-  const stageDbPath = path.join(stageDir, 'flo.db');
+  const stageDbPath = path.join(stageDir, 'kahera.db');
   fs.copyFileSync(seededCommittedBackupPath, stageDbPath);
 
   let setupDb: Database.Database | undefined;
@@ -363,7 +363,7 @@ async function run(): Promise<void> {
     clearDirectory(backupDir);
 
     // 1. Synthetic newer-schema database (DELETE mode + active WAL mode with -wal/-shm sidecars)
-    //    must throw SchemaVersionMismatchError without altering flo.db or removing sidecars.
+    //    must throw SchemaVersionMismatchError without altering kahera.db or removing sidecars.
     const deleteModeNewerPath = path.join(testDir, 'newer-delete-mode.db');
     writeStampedSchemaSnapshot(deleteModeNewerPath, maxSupported, {
       appVersion: '4.1.0',
@@ -450,16 +450,16 @@ async function run(): Promise<void> {
     assert.equal(caughtWalMismatch!.dbVersion, newerDbVersion);
     assert.equal(caughtWalMismatch!.appVersion, maxSupported);
     assert.equal(caughtWalMismatch!.dbAppVersion, '4.2.0');
-    assert.equal(sha256File(dbPath), walHashes.dbSha, 'WAL newer flo.db bytes untouched');
+    assert.equal(sha256File(dbPath), walHashes.dbSha, 'WAL newer kahera.db bytes untouched');
     assert.equal(
       sha256File(`${dbPath}-wal`),
       walHashes.walSha,
-      'WAL newer flo.db-wal preserved untouched',
+      'WAL newer kahera.db-wal preserved untouched',
     );
     assert.equal(
       sha256File(`${dbPath}-shm`),
       walHashes.shmSha,
-      'WAL newer flo.db-shm preserved untouched',
+      'WAL newer kahera.db-shm preserved untouched',
     );
 
     // 2. Backup discovery & content validation (ignoring misleading filenames).
@@ -634,7 +634,7 @@ async function run(): Promise<void> {
     const rejectedByName = new Map(discovery.corruptOrInvalid.map((item) => [item.fileName, item]));
     assert.equal(
       rejectedByName.get(path.basename(preV0BackupPath))?.detail,
-      'Backup does not contain an initialized Flo Cafe schema',
+      'Backup does not contain an initialized Kahera schema',
       'first-boot pre-v0 snapshot reports uninitialized schema rather than header mismatch',
     );
     assert.equal(rejectedByName.get(path.basename(preV0BackupPath))?.schemaVersion, null);
@@ -698,7 +698,7 @@ async function run(): Promise<void> {
       'Open Backups Folder',
       'Exit',
     ]);
-    assert.match(noCompatibleDialogs[1]?.detail || '', /require a newer Flo Cafe version/);
+    assert.match(noCompatibleDialogs[1]?.detail || '', /require a newer Kahera version/);
     assert.match(noCompatibleDialogs[1]?.detail || '', /failed integrity or schema validation/);
     assert.deepEqual(openedPaths, [backupDir], 'Open Backups Folder reveals backupDir');
     assert.deepEqual(
@@ -752,16 +752,16 @@ async function run(): Promise<void> {
       /flo-preserved-newer-v/,
       'confirmation dialog states exact preserved newer-DB archive path',
     );
-    assert.equal(sha256File(dbPath), walHashes.dbSha, 'cancelled restore leaves flo.db untouched');
+    assert.equal(sha256File(dbPath), walHashes.dbSha, 'cancelled restore leaves kahera.db untouched');
     assert.equal(
       sha256File(`${dbPath}-wal`),
       walHashes.walSha,
-      'cancelled restore leaves flo.db-wal untouched',
+      'cancelled restore leaves kahera.db-wal untouched',
     );
     assert.equal(
       sha256File(`${dbPath}-shm`),
       walHashes.shmSha,
-      'cancelled restore leaves flo.db-shm untouched',
+      'cancelled restore leaves kahera.db-shm untouched',
     );
     assert.deepEqual(
       fs.readdirSync(backupDir).filter((name) => name.startsWith('flo-preserved-newer-')),
@@ -858,7 +858,7 @@ async function run(): Promise<void> {
     assert.equal(sha256File(`${dbPath}-wal`), walHashes.walSha);
     assert.equal(sha256File(`${dbPath}-shm`), walHashes.shmSha);
 
-    // 4b. Simulated mid-replacement I/O failure rolls back flo.db + -wal + -shm cleanly,
+    // 4b. Simulated mid-replacement I/O failure rolls back kahera.db + -wal + -shm cleanly,
     //     cleans up temporary journal artifacts, preserves archive, and surfaces actionable error.
     const mutableFs = nativeFs as unknown as { copyFileSync: typeof fs.copyFileSync };
     const originalCopyFileSync = nativeFs.copyFileSync;
@@ -919,17 +919,17 @@ async function run(): Promise<void> {
     assert.equal(
       sha256File(dbPath),
       walHashes.dbSha,
-      'mid-replacement rollback restores flo.db byte-for-byte',
+      'mid-replacement rollback restores kahera.db byte-for-byte',
     );
     assert.equal(
       sha256File(`${dbPath}-wal`),
       walHashes.walSha,
-      'mid-replacement rollback restores flo.db-wal byte-for-byte',
+      'mid-replacement rollback restores kahera.db-wal byte-for-byte',
     );
     assert.equal(
       sha256File(`${dbPath}-shm`),
       walHashes.shmSha,
-      'mid-replacement rollback restores flo.db-shm byte-for-byte',
+      'mid-replacement rollback restores kahera.db-shm byte-for-byte',
     );
     assert.deepEqual(
       fs.readdirSync(backupDir).filter((name) => name.includes('recovery-')),
@@ -938,7 +938,7 @@ async function run(): Promise<void> {
     );
 
     // 4c. Simulated process crash leaving a prepared downgrade replacement journal + sidecars on disk
-    //     while live flo.db is missing: next startup recovers flo.db + -wal + -shm and re-raises SchemaVersionMismatchError.
+    //     while live kahera.db is missing: next startup recovers kahera.db + -wal + -shm and re-raises SchemaVersionMismatchError.
     const crashJournalBase = path.join(backupDir, 'flo-restore-recovery-crashtest01');
     fs.copyFileSync(dbPath, `${crashJournalBase}.db`);
     fs.copyFileSync(`${dbPath}-wal`, `${crashJournalBase}.db-wal`);
@@ -967,17 +967,17 @@ async function run(): Promise<void> {
     assert.equal(
       sha256File(dbPath),
       walHashes.dbSha,
-      'crash-recovery restores newer flo.db byte-for-byte',
+      'crash-recovery restores newer kahera.db byte-for-byte',
     );
     assert.equal(
       sha256File(`${dbPath}-wal`),
       walHashes.walSha,
-      'crash-recovery restores newer flo.db-wal byte-for-byte',
+      'crash-recovery restores newer kahera.db-wal byte-for-byte',
     );
     assert.equal(
       sha256File(`${dbPath}-shm`),
       walHashes.shmSha,
-      'crash-recovery restores newer flo.db-shm byte-for-byte',
+      'crash-recovery restores newer kahera.db-shm byte-for-byte',
     );
     assert.equal(
       fs.existsSync(`${crashJournalBase}.json`),
@@ -1032,17 +1032,17 @@ async function run(): Promise<void> {
     assert.equal(
       sha256File(dbPath),
       walHashes.dbSha,
-      'post-migration schema failure rolls back flo.db',
+      'post-migration schema failure rolls back kahera.db',
     );
     assert.equal(
       sha256File(`${dbPath}-wal`),
       walHashes.walSha,
-      'post-migration schema failure rolls back flo.db-wal',
+      'post-migration schema failure rolls back kahera.db-wal',
     );
     assert.equal(
       sha256File(`${dbPath}-shm`),
       walHashes.shmSha,
-      'post-migration schema failure rolls back flo.db-shm',
+      'post-migration schema failure rolls back kahera.db-shm',
     );
     assert.deepEqual(
       fs.readdirSync(backupDir).filter((name) => name.includes('recovery-')),
@@ -1111,17 +1111,17 @@ async function run(): Promise<void> {
     assert.equal(
       sha256File(restoreResult.preservedDbPath),
       walHashes.dbSha,
-      'preserved newer DB matches original flo.db byte-for-byte',
+      'preserved newer DB matches original kahera.db byte-for-byte',
     );
     assert.equal(
       sha256File(`${restoreResult.preservedDbPath}-wal`),
       walHashes.walSha,
-      'preserved -wal matches original flo.db-wal byte-for-byte',
+      'preserved -wal matches original kahera.db-wal byte-for-byte',
     );
     assert.equal(
       sha256File(`${restoreResult.preservedDbPath}-shm`),
       walHashes.shmSha,
-      'preserved -shm matches original flo.db-shm byte-for-byte',
+      'preserved -shm matches original kahera.db-shm byte-for-byte',
     );
     verifyPreservedNewerSetReadable(
       restoreResult.preservedDbPath,
@@ -1301,12 +1301,12 @@ async function run(): Promise<void> {
           `)
           .run(orderNumber);
         assert.ok(fs.statSync(`${dbPath}-wal`).size > 0);
-        fs.copyFileSync(dbPath, path.join(crashStageDir, 'flo.db'));
-        fs.copyFileSync(`${dbPath}-wal`, path.join(crashStageDir, 'flo.db-wal'));
+        fs.copyFileSync(dbPath, path.join(crashStageDir, 'kahera.db'));
+        fs.copyFileSync(`${dbPath}-wal`, path.join(crashStageDir, 'kahera.db-wal'));
         closeDatabase();
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(crashStageDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(crashStageDir, 'flo.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(crashStageDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(crashStageDir, 'kahera.db-wal'), `${dbPath}-wal`);
         assert.equal(fs.existsSync(`${dbPath}-shm`), false);
       } finally {
         fs.rmSync(crashStageDir, { recursive: true, force: true });
@@ -1551,12 +1551,12 @@ async function run(): Promise<void> {
       assert.equal(
         fs.existsSync(`${dbPath}-wal`),
         false,
-        'preflight does not create flo.db-wal on cleanly closed WAL newer DB',
+        'preflight does not create kahera.db-wal on cleanly closed WAL newer DB',
       );
       assert.equal(
         fs.existsSync(`${dbPath}-shm`),
         false,
-        'preflight does not create flo.db-shm on cleanly closed WAL newer DB',
+        'preflight does not create kahera.db-shm on cleanly closed WAL newer DB',
       );
 
       const walClosedRestoreCandidate = path.join(
@@ -1592,10 +1592,10 @@ async function run(): Promise<void> {
           VALUES ('ORD-20261029-0092', 'takeaway', 'completed', 13, 13, '2026-10-29 13:10:00', '2026-10-29 13:15:00')
         `)
         .run();
-      fs.copyFileSync(dbPath, path.join(walEnospcStageDir, 'flo.db'));
-      fs.copyFileSync(`${dbPath}-wal`, path.join(walEnospcStageDir, 'flo.db-wal'));
-      walLiveDbSha = sha256File(path.join(walEnospcStageDir, 'flo.db'));
-      walLiveWalSha = sha256File(path.join(walEnospcStageDir, 'flo.db-wal'));
+      fs.copyFileSync(dbPath, path.join(walEnospcStageDir, 'kahera.db'));
+      fs.copyFileSync(`${dbPath}-wal`, path.join(walEnospcStageDir, 'kahera.db-wal'));
+      walLiveDbSha = sha256File(path.join(walEnospcStageDir, 'kahera.db'));
+      walLiveWalSha = sha256File(path.join(walEnospcStageDir, 'kahera.db-wal'));
       closeDatabase();
 
       const walNewerEnospcHashes = buildActiveNewerWalDatabase(
@@ -1606,16 +1606,16 @@ async function run(): Promise<void> {
       );
       const walNewerCopyDir = path.join(walEnospcStageDir, 'newer-wal');
       fs.mkdirSync(walNewerCopyDir);
-      fs.copyFileSync(dbPath, path.join(walNewerCopyDir, 'flo.db'));
-      fs.copyFileSync(`${dbPath}-wal`, path.join(walNewerCopyDir, 'flo.db-wal'));
-      fs.copyFileSync(`${dbPath}-shm`, path.join(walNewerCopyDir, 'flo.db-shm'));
+      fs.copyFileSync(dbPath, path.join(walNewerCopyDir, 'kahera.db'));
+      fs.copyFileSync(`${dbPath}-wal`, path.join(walNewerCopyDir, 'kahera.db-wal'));
+      fs.copyFileSync(`${dbPath}-shm`, path.join(walNewerCopyDir, 'kahera.db-shm'));
 
       // Also build a supported WAL database whose header is still older/unchanged while a
       // committed row lives only in -wal/-shm (crash-recovery startup with full /tmp volume).
       const walSupportedCrashDir = path.join(walEnospcStageDir, 'supported-wal-crash');
       fs.mkdirSync(walSupportedCrashDir);
       {
-        const crashStageDbPath = path.join(walSupportedCrashDir, 'flo.db');
+        const crashStageDbPath = path.join(walSupportedCrashDir, 'kahera.db');
         fs.copyFileSync(committedCleanSnapshot, crashStageDbPath);
         const crashWriter = new Database(crashStageDbPath);
         crashWriter.pragma('journal_mode = WAL');
@@ -1628,9 +1628,9 @@ async function run(): Promise<void> {
           .run();
         const crashCopyDir = path.join(walEnospcStageDir, 'supported-wal-crash-live');
         fs.mkdirSync(crashCopyDir);
-        fs.copyFileSync(crashStageDbPath, path.join(crashCopyDir, 'flo.db'));
-        fs.copyFileSync(`${crashStageDbPath}-wal`, path.join(crashCopyDir, 'flo.db-wal'));
-        fs.copyFileSync(`${crashStageDbPath}-shm`, path.join(crashCopyDir, 'flo.db-shm'));
+        fs.copyFileSync(crashStageDbPath, path.join(crashCopyDir, 'kahera.db'));
+        fs.copyFileSync(`${crashStageDbPath}-wal`, path.join(crashCopyDir, 'kahera.db-wal'));
+        fs.copyFileSync(`${crashStageDbPath}-shm`, path.join(crashCopyDir, 'kahera.db-shm'));
         crashWriter.close();
       }
       const walSupportedCrashLiveDir = path.join(walEnospcStageDir, 'supported-wal-crash-live');
@@ -1689,9 +1689,9 @@ async function run(): Promise<void> {
 
         // Supported WAL crash-recovery database boots cleanly via DB-volume fallback staging.
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'flo.db-wal'), `${dbPath}-wal`);
-        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'flo.db-shm'), `${dbPath}-shm`);
+        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'kahera.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'kahera.db-shm'), `${dbPath}-shm`);
         initDatabase();
         assert.deepEqual(
           getDatabase()
@@ -1717,9 +1717,9 @@ async function run(): Promise<void> {
         // full async discovery + downgrade restore + subsequent startup all succeed via DB-volume staging.
         clearDirectory(backupDir);
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-wal'), `${dbPath}-wal`);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-shm'), `${dbPath}-shm`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-shm'), `${dbPath}-shm`);
         let tmpOnlyNewerWalMismatch: SchemaVersionMismatchError | null = null;
         assert.throws(
           () => initDatabase(),
@@ -1872,8 +1872,8 @@ async function run(): Promise<void> {
         // Committed WAL replacement journal health probe also succeeds via DB-volume fallback.
         clearDirectory(backupDir);
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db-wal'), `${dbPath}-wal`);
         const tmpOnlyWalCommittedBase = path.join(backupDir, 'flo-restore-recovery-tmponlywal');
         fs.copyFileSync(baseTemplateCopy, `${tmpOnlyWalCommittedBase}.db`);
         fs.writeFileSync(
@@ -1975,9 +1975,9 @@ async function run(): Promise<void> {
         assert.equal(enospcHeaderNewerWithWalMismatch!.dbAppVersion, null);
 
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-wal'), `${dbPath}-wal`);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-shm'), `${dbPath}-shm`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-shm'), `${dbPath}-shm`);
         let enospcWalNewerMismatch: SchemaVersionMismatchError | null = null;
         assert.throws(
           () => initDatabase(),
@@ -1988,7 +1988,7 @@ async function run(): Promise<void> {
             }
             return false;
           },
-          'newer-version (> maxSupported) user_version inside -wal is detected non-mutatingly without modifying flo.db or flo.db-wal even when staging fails with ENOSPC',
+          'newer-version (> maxSupported) user_version inside -wal is detected non-mutatingly without modifying kahera.db or kahera.db-wal even when staging fails with ENOSPC',
         );
         assert.equal(enospcWalNewerMismatch!.dbVersion, newerDbVersion);
         assert.equal(enospcWalNewerMismatch!.dbAppVersion, null);
@@ -2013,9 +2013,9 @@ async function run(): Promise<void> {
         // Regression test for Qodo finding #3 (a): supported-version WAL DB (with -wal sidecar)
         // starts cleanly via initDatabase() even when staging fails with ENOSPC.
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'flo.db-wal'), `${dbPath}-wal`);
-        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'flo.db-shm'), `${dbPath}-shm`);
+        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'kahera.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walSupportedCrashLiveDir, 'kahera.db-shm'), `${dbPath}-shm`);
         initDatabase();
         assert.deepEqual(
           getDatabase()
@@ -2086,8 +2086,8 @@ async function run(): Promise<void> {
         for (const [index, isDowngradeJournal] of [true, false].entries()) {
           clearDirectory(backupDir);
           removeDbSet(dbPath);
-          fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db'), dbPath);
-          fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db-wal'), `${dbPath}-wal`);
+          fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db'), dbPath);
+          fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db-wal'), `${dbPath}-wal`);
           const walCommittedBase = path.join(
             backupDir,
             `flo-restore-recovery-enospcwal0${index + 1}`,
@@ -2223,8 +2223,8 @@ async function run(): Promise<void> {
 
       clearDirectory(backupDir);
       removeDbSet(dbPath);
-      fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db'), dbPath);
-      fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db-wal'), `${dbPath}-wal`);
+      fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db'), dbPath);
+      fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db-wal'), `${dbPath}-wal`);
       const recoveredWalBase = path.join(backupDir, 'flo-restore-recovery-enospcwalok');
       fs.copyFileSync(baseTemplateCopy, `${recoveredWalBase}.db`);
       fs.writeFileSync(
@@ -2286,8 +2286,8 @@ async function run(): Promise<void> {
         for (const [idx, isDowngradeJournal] of [true, false].entries()) {
           clearDirectory(backupDir);
           removeDbSet(dbPath);
-          fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db'), dbPath);
-          fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db-wal'), `${dbPath}-wal`);
+          fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db'), dbPath);
+          fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db-wal'), `${dbPath}-wal`);
           const shmCommittedBase = path.join(
             backupDir,
             `flo-restore-recovery-shmcommit0${idx + 1}`,
@@ -2353,9 +2353,9 @@ async function run(): Promise<void> {
         // (2) Supported-header + newer-WAL preflight retries on DB volume instead of returning null.
         clearDirectory(backupDir);
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-wal'), `${dbPath}-wal`);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-shm'), `${dbPath}-shm`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-shm'), `${dbPath}-shm`);
         let shmPreflightMismatch: SchemaVersionMismatchError | null = null;
         assert.throws(
           () => initDatabase(),
@@ -2474,11 +2474,11 @@ async function run(): Promise<void> {
       } as typeof Database.prototype.pragma;
 
       try {
-        // Committed WAL journal fails closed without overwriting committed flo.db.
+        // Committed WAL journal fails closed without overwriting committed kahera.db.
         clearDirectory(backupDir);
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walEnospcStageDir, 'flo.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walEnospcStageDir, 'kahera.db-wal'), `${dbPath}-wal`);
         const dualShmCommittedBase = path.join(backupDir, 'flo-restore-recovery-dualshmcommit');
         fs.copyFileSync(baseTemplateCopy, `${dualShmCommittedBase}.db`);
         fs.writeFileSync(
@@ -2506,9 +2506,9 @@ async function run(): Promise<void> {
         // and throws SchemaVersionMismatchError even when both volumes throw SQLITE_IOERR_SHMSIZE.
         clearDirectory(backupDir);
         removeDbSet(dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db'), dbPath);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-wal'), `${dbPath}-wal`);
-        fs.copyFileSync(path.join(walNewerCopyDir, 'flo.db-shm'), `${dbPath}-shm`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db'), dbPath);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-wal'), `${dbPath}-wal`);
+        fs.copyFileSync(path.join(walNewerCopyDir, 'kahera.db-shm'), `${dbPath}-shm`);
         let dualShmWalMismatch: SchemaVersionMismatchError | null = null;
         assert.throws(
           () => initDatabase(),
@@ -2650,7 +2650,7 @@ async function run(): Promise<void> {
       fs.rmSync(walEnospcStageDir, { recursive: true, force: true });
     }
 
-    // 5h. Genuine active hot rollback journal (flo.db-journal) is refused before any archive,
+    // 5h. Genuine active hot rollback journal (kahera.db-journal) is refused before any archive,
     //     replacement journal, or live-file mutation, and interrupted recovery clears stale -journal.
     const hotJournalSeedDir = fs.mkdtempSync(path.join(os.tmpdir(), 'flo-hot-journal-seed-'));
     try {
@@ -2689,7 +2689,7 @@ async function run(): Promise<void> {
       assert.equal(
         fs.readFileSync(dbPath).includes(Buffer.from('UNCOMMITTED-', 'utf8')),
         true,
-        'spilled uncommitted pages are present in raw flo.db before rollback replay',
+        'spilled uncommitted pages are present in raw kahera.db before rollback replay',
       );
 
       let hotPreflightMismatch: SchemaVersionMismatchError | null = null;
@@ -2706,11 +2706,11 @@ async function run(): Promise<void> {
       );
       assert.equal(hotPreflightMismatch!.dbVersion, newerDbVersion);
       assert.equal(hotPreflightMismatch!.dbAppVersion, '4.7.0');
-      assert.equal(sha256File(dbPath), hotJournalHashes.dbSha, 'preflight preserves flo.db bytes');
+      assert.equal(sha256File(dbPath), hotJournalHashes.dbSha, 'preflight preserves kahera.db bytes');
       assert.equal(
         sha256File(`${dbPath}-journal`),
         hotJournalHashes.journalSha,
-        'preflight preserves flo.db-journal bytes',
+        'preflight preserves kahera.db-journal bytes',
       );
 
       await assert.rejects(
@@ -2718,18 +2718,18 @@ async function run(): Promise<void> {
           restoreCompatibleBackupForDowngrade(hotCompatibleBackupPath, {
             newerDbVersion,
           }),
-        /rollback journal[\s\S]*update Flo Cafe/i,
+        /rollback journal[\s\S]*update Kahera/i,
         'downgrade restore refuses active hot rollback journal with actionable update guidance',
       );
       assert.equal(
         sha256File(dbPath),
         hotJournalHashes.dbSha,
-        'refused hot-journal restore leaves flo.db SHA-256 untouched',
+        'refused hot-journal restore leaves kahera.db SHA-256 untouched',
       );
       assert.equal(
         sha256File(`${dbPath}-journal`),
         hotJournalHashes.journalSha,
-        'refused hot-journal restore leaves flo.db-journal SHA-256 untouched',
+        'refused hot-journal restore leaves kahera.db-journal SHA-256 untouched',
       );
       assert.deepEqual(
         fs
@@ -2742,10 +2742,10 @@ async function run(): Promise<void> {
         'refused hot-journal restore writes no archive or replacement journal artifacts',
       );
 
-      // Verify isolated replay of untouched flo.db + flo.db-journal still yields NEWER-COMMITTED-.
+      // Verify isolated replay of untouched kahera.db + kahera.db-journal still yields NEWER-COMMITTED-.
       const verifyHotDir = path.join(hotJournalSeedDir, 'verify-replay');
       fs.mkdirSync(verifyHotDir);
-      const verifyHotDbPath = path.join(verifyHotDir, 'flo.db');
+      const verifyHotDbPath = path.join(verifyHotDir, 'kahera.db');
       fs.copyFileSync(dbPath, verifyHotDbPath);
       fs.copyFileSync(`${dbPath}-journal`, `${verifyHotDbPath}-journal`);
       {
@@ -2760,7 +2760,7 @@ async function run(): Promise<void> {
       }
 
       // Verify runDowngradeRecoveryFlow surfaces the actionable rollback-journal refusal dialog
-      // and allows exiting safely without modifying flo.db or flo.db-journal.
+      // and allows exiting safely without modifying kahera.db or kahera.db-journal.
       let hotJournalErrorDialogDetail = '';
       const hotJournalFlowOutcome = await runDowngradeRecoveryFlow(hotPreflightMismatch!, {
         appVersion: '3.13.14',
@@ -2796,7 +2796,7 @@ async function run(): Promise<void> {
       assert.equal(sha256File(dbPath), hotJournalHashes.dbSha);
       assert.equal(sha256File(`${dbPath}-journal`), hotJournalHashes.journalSha);
 
-      // Interrupted replacement recovery clears any mismatched flo.db-journal before installing
+      // Interrupted replacement recovery clears any mismatched kahera.db-journal before installing
       // the verified recovery snapshot so old journal pages never replay into the recovered DB.
       clearDirectory(backupDir);
       fs.copyFileSync(savedHotRawDb, dbPath);
@@ -2821,7 +2821,7 @@ async function run(): Promise<void> {
       assert.equal(
         fs.existsSync(`${dbPath}-journal`),
         false,
-        'interrupted replacement recovery removes stale flo.db-journal before restoring snapshot',
+        'interrupted replacement recovery removes stale kahera.db-journal before restoring snapshot',
       );
       const recoveredMarker = getDatabase()
         .prepare(
@@ -2925,7 +2925,7 @@ async function run(): Promise<void> {
       assert.equal(sha256File(`${dbPath}-shm`), metaOnlyWalHashes.shmSha);
 
       // (c) Active rollback-journal database with user_version = maxSupported and committed
-      //     _flo_meta.schema_version = newerDbVersion protected by hot flo.db-journal.
+      //     _flo_meta.schema_version = newerDbVersion protected by hot kahera.db-journal.
       const metaOnlyHotSeedPath = path.join(metaOnlyDir, 'hot-seed.db');
       fs.copyFileSync(baseTemplateCopy, metaOnlyHotSeedPath);
       {

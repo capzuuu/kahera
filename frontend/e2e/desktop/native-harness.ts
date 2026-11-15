@@ -348,7 +348,7 @@ export async function createNativeElectronHarness(): Promise<NativeElectronHarne
     FLO_E2E_SKIP_OPTIONAL_NETWORK: '1',
     FLO_MATRIX_OFFLINE: '1',
     FLO_E2E_USER_DATA_DIR: profileDir,
-    FLO_E2E_DB_PATH: path.join(profileDir, 'flo.db'),
+    FLO_E2E_DB_PATH: path.join(profileDir, 'kahera.db'),
     FLO_E2E_PID_FILE: pidFile,
     FLO_E2E_HIDDEN_WINDOW: hiddenWindow ? '1' : '0',
     PORT: String(ports.main),

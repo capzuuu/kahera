@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { ChefHat, Delete, KeyRound, Mail, UserRound } from 'lucide-react';
+import { Grid3X3, Delete, KeyRound, Mail, UserRound } from 'lucide-react';
 import { useTranslations } from 'use-intl';
 import { ROLE_LABEL_KEYS } from '@/lib/i18n-enums';
 import type { KdsPinUser, UseKdsConnectionResult } from '@/hooks/useKdsConnection';
@@ -57,7 +57,7 @@ export function KdsLoginForm({ conn }: { conn: UseKdsConnectionResult }) {
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <div className="bg-card rounded-2xl shadow-xl p-8 w-full max-w-md">
         <div className="text-center mb-6">
-          <ChefHat size={48} className="mx-auto text-brand dark:text-indigo-300 mb-4" />
+          <Grid3X3 size={48} className="mx-auto text-brand dark:text-indigo-300 mb-4" />
           <h1 className="text-2xl font-bold text-foreground">{t('title')}</h1>
           <p className="text-slate-700 dark:text-slate-300 mt-2">{t('loginSubtitle')}</p>
         </div>

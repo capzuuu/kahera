@@ -1,6 +1,6 @@
 # Printer setup
 
-FloCafe prints receipts and kitchen order tickets from the desktop app. Configure printers in
+Kahera prints receipts and kitchen order tickets from the desktop app. Configure printers in
 **Settings > Printers**, then use **Test Print** before service.
 
 > For how the print pipeline is put together, see
@@ -22,7 +22,7 @@ Set the printer profile and printable columns to match the hardware (see
 becomes the default; choose a different default in Settings when another printer should receive
 ordinary receipts. Keep **Print Method** set to **ESCPOS (USB / Network Thermal Printer)** for
 USB, Network, and WebUSB receipt printers; **Browser Print (any printer)** opens the browser print
-dialog instead. If no hardware printer is configured, FloCafe falls back to system print when
+dialog instead. If no hardware printer is configured, Kahera falls back to system print when
 printing bills.
 
 Set **Text size** per printer to Normal, Large, or Extra large when printed text is hard to read.
@@ -34,13 +34,13 @@ thermal receipt, kitchen-ticket, and delivery-slip font sizes and weights. Exist
 Normal, which prints as before.
 
 Enable **Open cash drawer on checkout** on a receipt printer only when a till is connected to that
-printer's drawer-kick port. When enabled, FloCafe appends the standard ESC/POS drawer pulse to
+printer's drawer-kick port. When enabled, Kahera appends the standard ESC/POS drawer pulse to
 printed receipt jobs for that printer, and only for payment methods on the drawer's allowlist.
 
 ## Receipt logos
 
 Upload a browser-supported image (PNG, JPEG, WebP, BMP, GIF, SVG, AVIF, or ICO, up to 5 MB) under
-**Settings > General > Store Logo**. FloCafe trims surrounding margins, normalizes contrast, builds
+**Settings > General > Store Logo**. Kahera trims surrounding margins, normalizes contrast, builds
 a monochrome thermal preview alongside the uploaded logo, and enables **Store Logo** automatically
 when you save. You can toggle **Store Logo** independently in **Settings > Printers > Bill Content**.
 Browser bills center the logo above the business header. See the
@@ -115,7 +115,7 @@ skipped with a warning and an unsupported financial row refuses the receipt befo
 
 Receipt labels (invoice title, bill number, date, totals, payment methods) and kitchen-ticket labels
 are resolved from the tenant's language configuration. During authenticated POS and KDS bootstrap,
-FloCafe loads the receipt and kitchen-ticket policies and their selected locale bundles before any
+Kahera loads the receipt and kitchen-ticket policies and their selected locale bundles before any
 first print resolves labels, so the first print does not depend on visiting Settings or racing
 session startup. If a bundle cannot load, the app surfaces an actionable error and the print
 warning reports any English fallback explicitly.
@@ -134,13 +134,13 @@ Language-specific script and print constraints are in the
 
 ## Kitchen printing
 
-FloCafe can print kitchen order tickets to the default printer or route items to configured kitchen
+Kahera can print kitchen order tickets to the default printer or route items to configured kitchen
 stations. Configure stations under **Settings > Operations > Kitchen Stations**, whether or not KDS
 is enabled. Each category can belong to only one active station, and the station editor separates
 categories selected for the current station, categories still available, and categories assigned
 elsewhere, with an **All categories (including new ones)** toggle (`category_ids: []`) when no
 specific categories are selected. Selecting a category from another station moves it to the current
-station when saved. Each station maps its categories to any configured FloCafe printer, and `routeItemsToStations` in
+station when saved. Each station maps its categories to any configured Kahera printer, and `routeItemsToStations` in
 `main/routes/printers.ts` resolves each item's station in precedence order: first an active station
 explicitly assigned to the item's category/subcategory, second an active station assigned to the
 item's parent category, and third the first active unrestricted station (`category_ids: []`) with a
@@ -164,38 +164,38 @@ print requests are sent.
 ### Quick checks
 
 1. Use **Settings > Printers > Test Print** to verify printer connectivity before live service.
-2. Keep FloCafe's local API and network printers confined to your private business network. The
+2. Keep Kahera's local API and network printers confined to your private business network. The
    local API is unencrypted; see
    [authentication and authorization](architecture/authentication-and-authorization.md).
 
 ### Adding a printer manually by name
 
-FloCafe dispatches USB and OS-queue print jobs by sending the printer's exact queue name to the OS
+Kahera dispatches USB and OS-queue print jobs by sending the printer's exact queue name to the OS
 (CUPS on macOS and Linux, or the Windows Print Spooler; see
 [Transports](architecture/printing.md#transports)). There is no fuzzy matching. If a
 printer is not found by **Settings > Printers > Detect**, use **Add Manually**, but the name must
 match the OS print queue identifier exactly, not just the printer's name on your desktop.
 
 - Prefer picking the name from the autocomplete list under the name field, which is sourced from the
-  same detection FloCafe uses, over typing it by hand.
+  same detection Kahera uses, over typing it by hand.
 - On macOS and Linux, the CUPS queue name can differ from the display name shown in system
   settings, because spaces are sometimes replaced with underscores. Check the exact queue name with
   `lpstat -p`.
 - On Windows, check **Settings > Printers & scanners** for the exact printer name, including a
   suffix like `(Copy 1)`.
 - If you rename or reinstall the printer at the OS level, its queue identifier can change. Re-add or
-  edit the printer in FloCafe with the new name.
+  edit the printer in Kahera with the new name.
 
 ### Network printers
 
-- Confirm the FloCafe machine can reach the printer on the trusted local business network.
+- Confirm the Kahera machine can reach the printer on the trusted local business network.
 - Verify the printer's IP address has not changed. Check your router's DHCP lease table, or configure
   a static IP or DHCP reservation.
 - Verify the configured port. The default for ESC/POS printers is `9100`.
 
 ### Windows USB and spooler printers
 
-FloCafe sends raw ESC/POS byte streams directly to the Windows print queue, bypassing the printer
+Kahera sends raw ESC/POS byte streams directly to the Windows print queue, bypassing the printer
 driver. This requires the queue's print processor to be set to `winprint` with datatype `RAW`.
 
 Manufacturer driver packages often install GDI graphics drivers that register proprietary print
@@ -205,34 +205,34 @@ processors or reject raw byte streams. If prints fail or come out garbled:
    print processor is `winprint` with datatype `RAW`.
 2. If issues persist, reinstall the printer using the Windows built-in **Generic / Text Only**
    driver, or the manufacturer's dedicated raw ESC/POS mode.
-3. Re-select the printer in FloCafe's printer settings, because renaming or reinstalling changes
+3. Re-select the printer in Kahera's printer settings, because renaming or reinstalling changes
    the stored queue identifier.
 
 ### macOS and Linux CUPS printers
 
 - On macOS (including the Mac App Store build), USB receipt printers must first be added in
-  **System Settings > Printers & Scanners** before FloCafe can detect or print to them. Connect the
+  **System Settings > Printers & Scanners** before Kahera can detect or print to them. Connect the
   USB printer, click **Add Printer, Scanner, or Fax...**, and select the manufacturer's driver or a
-  generic queue (**Generic PostScript Printer** or **Generic PCL Printer**); FloCafe sends raw
+  generic queue (**Generic PostScript Printer** or **Generic PCL Printer**); Kahera sends raw
   ESC/POS bytes through CUPS and bypasses macOS page filters (see
   [Transports](architecture/printing.md#transports)). Once the queue is added in macOS, click
-  **Detect** in **Settings > Printers** and select the detected queue so the printer name in FloCafe
+  **Detect** in **Settings > Printers** and select the detected queue so the printer name in Kahera
   matches the CUPS queue name.
 - When no matching CUPS queue exists (for example, before the USB printer is added in **System
   Settings > Printers & Scanners** or when a manual name does not match the CUPS queue identifier),
-  CUPS returns `client-error-not-found` (`0x0406`) and FloCafe reports `Printer queue "<name>" was
+  CUPS returns `client-error-not-found` (`0x0406`) and Kahera reports `Printer queue "<name>" was
   not found in macOS Printers & Scanners` (`failureClass: not_configured`).
 - If a printer was unplugged, the CUPS print queue may be in a disabled or paused state. Re-enable
-  the queue in your operating system printer settings; FloCafe resumes sending print jobs once the
+  the queue in your operating system printer settings; Kahera resumes sending print jobs once the
   queue is active.
 - For Linux USB permissions, ensure your user account is in the `lp` group. See
   [Linux installation and support](linux.md#printing).
 
 ### Bluetooth and OS-paired printers
 
-FloCafe does not manage standalone Bluetooth RFCOMM transport or discovery. To use a Bluetooth
+Kahera does not manage standalone Bluetooth RFCOMM transport or discovery. To use a Bluetooth
 receipt printer, pair the device in your operating system so it registers as an active printer queue
-through CUPS on macOS and Linux, or the Windows Print Spooler. FloCafe detects and dispatches print
+through CUPS on macOS and Linux, or the Windows Print Spooler. Kahera detects and dispatches print
 jobs through that OS-managed queue.
 
 ### WebUSB printers

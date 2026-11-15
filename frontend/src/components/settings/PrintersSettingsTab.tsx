@@ -15,7 +15,6 @@ import {
   Settings,
   Trash2,
   AlertTriangle,
-  Share2,
   FileText,
 } from 'lucide-react';
 import { useTranslations, type AppConfig } from 'use-intl';
@@ -31,7 +30,7 @@ import {
   isTemplateCardSelected,
   type BillTemplateSelectionSource,
 } from '@/lib/bill-template-picker';
-import { type PaperSize, type BillTemplate } from '@/store/pos-settings';
+import { type PaperSize, type BillTemplate, usePosSettingsStore } from '@/store/pos-settings';
 import { usePrinterStore } from '@/hooks/usePrinter';
 import api from '@/lib/api';
 import toast from 'react-hot-toast';
@@ -443,6 +442,52 @@ export function PrintersSettingsTab({
   return (
     <SettingsTabShell maxWidth="wide">
       <div className="space-y-6">
+        {/* Master Print Switch */}
+        <div
+          data-setting-section="printer-master-toggle"
+          className="bg-card rounded-xl border border-border p-6 shadow-sm"
+        >
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-start gap-3">
+              <div
+                className={`p-2.5 rounded-xl transition-colors ${
+                  printingForm.printerEnabled
+                    ? 'bg-brand/10 text-brand'
+                    : 'bg-muted text-muted-foreground'
+                }`}
+              >
+                <Printer size={24} />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-semibold text-foreground">{t('enablePrinter')}</h2>
+                  <span
+                    className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
+                      printingForm.printerEnabled
+                        ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
+                        : 'bg-muted text-muted-foreground'
+                    }`}
+                  >
+                    {printingForm.printerEnabled ? t('printerOnline') : t('printerOffline')}
+                  </span>
+                </div>
+                <p className="text-sm text-muted-foreground mt-0.5">{t('enablePrinterHint')}</p>
+              </div>
+            </div>
+            <Toggle
+              value={printingForm.printerEnabled}
+              label={t('enablePrinter')}
+              disabled={!canEditPrintingOptions}
+              onChange={(v) => {
+                if (!canEditPrintingOptions) return;
+                markHydrationTouched('printerEnabled');
+                setPrintingForm((p) => ({ ...p, printerEnabled: v }));
+                usePosSettingsStore.getState().setPrinterEnabled(v);
+              }}
+            />
+          </div>
+        </div>
+
         <div
           data-setting-section="printers-hardware"
           className="bg-card rounded-xl border border-border p-6"
@@ -985,6 +1030,7 @@ export function PrintersSettingsTab({
                   if (!canEditPrintingOptions) return;
                   markHydrationTouched('printerEnabled');
                   setPrintingForm((p) => ({ ...p, printerEnabled: v }));
+                  usePosSettingsStore.getState().setPrinterEnabled(v);
                 }}
               />
             </div>
@@ -1446,32 +1492,6 @@ export function PrintersSettingsTab({
                 <p className="text-xs text-muted-foreground mt-1">{t('footerMessageHint')}</p>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div
-          data-setting-section="whatsapp-sharing"
-          className="bg-card rounded-xl border border-border p-6"
-        >
-          <div className="flex items-center gap-2 mb-4">
-            <Share2 size={20} className="text-muted-foreground" />
-            <h2 className="font-semibold text-foreground">{t('whatsappSharing')}</h2>
-          </div>
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-foreground">{t('enableWhatsappShare')}</p>
-              <p className="text-sm text-muted-foreground">{t('enableWhatsappShareHint')}</p>
-            </div>
-            <Toggle
-              value={printingForm.whatsappShareEnabled}
-              label={t('enableWhatsappShare')}
-              disabled={!canEditPrintingOptions}
-              onChange={(v) => {
-                if (!canEditPrintingOptions) return;
-                markHydrationTouched('whatsappShareEnabled');
-                setPrintingForm((p) => ({ ...p, whatsappShareEnabled: v }));
-              }}
-            />
           </div>
         </div>
       </div>

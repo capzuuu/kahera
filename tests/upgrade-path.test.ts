@@ -37,7 +37,7 @@ const originalLoad = Module._load;
 const testDir = fs.mkdtempSync(path.join(os.tmpdir(), 'flo-upgrade-path-'));
 
 const FIXTURE = path.join(__dirname, 'fixtures/upgrade-snapshots/pre-migration-scheme-v1.5.0.db');
-const upgradeDbPath = path.join(testDir, 'flo.db');
+const upgradeDbPath = path.join(testDir, 'kahera.db');
 fs.copyFileSync(FIXTURE, upgradeDbPath);
 
 const FixtureDatabase = require('better-sqlite3');

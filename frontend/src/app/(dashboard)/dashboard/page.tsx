@@ -277,10 +277,7 @@ export default function DashboardPage() {
 
   const isOwner = tenantCan(currentTenant, 'dashboard.view');
   const canViewFinancials = tenantCan(currentTenant, 'reports.financial.view');
-  const canSendDailySalesWhatsApp =
-    tenantCan(currentTenant, 'reports.view') &&
-    tenantCan(currentTenant, 'reports.daily-sales.export') &&
-    tenantCan(currentTenant, 'whatsapp.use');
+  const canSendDailySalesWhatsApp = false;
   const canViewSettings = tenantCan(currentTenant, 'settings.view');
   const fmt = useFormatCurrency();
   // Financial figures require `reports.financial.view`, independently of `dashboard.view`;

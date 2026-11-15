@@ -847,14 +847,14 @@ export default function CartPanel({
       {/* Cart Footer */}
       <div
         data-testid="cart-footer"
-        className="px-2.5 py-1 border-t border-border dark:border-border bg-card space-y-1"
+        className="px-2.5 py-1.5 border-t border-border dark:border-border bg-card space-y-1.5"
       >
         {/* Order Notes (shown only when non-empty or toggled open) */}
         {(cart.orderNotes.length > 0 || orderNotesExpanded) && (
           <div className="relative flex items-center">
             <StickyNote
-              size={13}
-              className="pointer-events-none absolute start-2 text-muted-foreground"
+              size={14}
+              className="pointer-events-none absolute start-2.5 text-muted-foreground"
             />
             <input
               data-testid="pos-order-notes-input"
@@ -868,7 +868,7 @@ export default function CartPanel({
               }}
               placeholder={t('orderNotesPlaceholder')}
               maxLength={200}
-              className="w-full h-7 ps-7 pe-7 text-xs border border-border bg-muted/40 rounded-md focus:outline-none focus:ring-1 focus:ring-brand/30 focus:border-brand"
+              className="w-full h-8 ps-8 pe-8 text-sm border border-border bg-muted/40 rounded-md focus:outline-none focus:ring-1 focus:ring-brand/30 focus:border-brand"
             />
             <button
               type="button"
@@ -877,17 +877,17 @@ export default function CartPanel({
                 setOrderNotesExpanded(false);
               }}
               aria-label={tCommon('clear')}
-              className="absolute end-1.5 inline-flex h-5 w-5 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
+              className="absolute end-1.5 inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground"
             >
-              <X size={12} />
+              <X size={14} />
             </button>
           </div>
         )}
-        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-0.5 text-xs">
-          <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1 text-sm">
+          <span className="inline-flex items-center gap-2 text-sm font-medium text-foreground/85">
             <span>
               {t('items')}{' '}
-              <span className="ms-0.5 font-semibold text-foreground tabular-nums">
+              <span className="ms-0.5 text-sm font-bold text-foreground tabular-nums">
                 {cart.itemCount()}
               </span>
             </span>
@@ -896,15 +896,15 @@ export default function CartPanel({
                 type="button"
                 data-testid="pos-order-note-toggle-btn"
                 onClick={() => setOrderNotesExpanded(true)}
-                className="inline-flex h-5 items-center gap-1 rounded border border-transparent px-1.5 text-[11px] text-muted-foreground transition-colors hover:border-border hover:bg-muted hover:text-foreground"
+                className="inline-flex h-6 items-center gap-1 rounded-md border border-border/70 bg-muted/50 px-2 text-xs font-medium text-foreground/85 transition-colors hover:border-border hover:bg-muted hover:text-foreground"
               >
                 <span>+ {orderNotesShortLabel}</span>
               </button>
             )}
           </span>
-          <span className="ms-auto flex flex-wrap items-baseline justify-end gap-1.5 min-w-0">
-            <span className="text-xs font-semibold text-foreground">{t('subtotal')}</span>
-            <span className="text-sm font-bold text-brand tabular-nums">
+          <span className="ms-auto flex flex-wrap items-baseline justify-end gap-2 min-w-0">
+            <span className="text-sm font-semibold text-foreground">{t('subtotal')}</span>
+            <span className="text-base font-bold text-brand tabular-nums">
               {fmt(cart.subtotal())}
             </span>
           </span>

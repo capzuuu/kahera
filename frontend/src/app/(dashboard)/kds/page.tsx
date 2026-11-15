@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { ChefHat } from 'lucide-react';
+import { Grid3X3 } from 'lucide-react';
 import api from '@/lib/api';
 import { KdsLoginForm } from '@/components/kds/KdsLoginForm';
 import { KdsWorkspace } from '@/components/kds/KdsWorkspace';
@@ -104,7 +104,7 @@ export default function KdsPage() {
   if (kdsEnabled === false) {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[60vh] gap-3 text-center px-6">
-        <ChefHat size={40} className="text-slate-500 dark:text-slate-400" />
+        <Grid3X3 size={40} className="text-slate-500 dark:text-slate-400" />
         <h1 className="text-lg font-semibold text-foreground">{t('disabledTitle')}</h1>
         <p className="text-sm text-slate-700 dark:text-slate-300 max-w-sm">
           {t('disabledHintDashboard')}

@@ -1,6 +1,6 @@
 # Printing architecture
 
-FloCafe prints through one semantic document model, several renderers, and several transports. This
+Kahera prints through one semantic document model, several renderers, and several transports. This
 page describes how those layers divide responsibility, so a change lands in the right one.
 
 For the merchant-authored template wire contract see
@@ -215,7 +215,7 @@ the callout banner.
 
 | Transport | Mechanism |
 | --- | --- |
-| Network | Raw socket. Data is sent in 4096-byte chunks (`NETWORK_PRINT_CHUNK_SIZE`) with a 10 ms delay between chunks (`NETWORK_PRINT_CHUNK_DELAY_MS`), so a large receipt does not overrun the printer's buffer. `validateNetworkPrinterTarget()` (enforced on `/api/printers` configuration and `printViaNetwork()` dispatch) rejects cloud metadata endpoints, unspecified/broadcast addresses, and FloCafe's own local listening ports across canonical and non-canonical (shorthand, octal, hexadecimal, and integer) IPv4 forms while preserving hostnames, custom ports, LAN/Tailscale/IPv6 addresses, and link-local printers. |
+| Network | Raw socket. Data is sent in 4096-byte chunks (`NETWORK_PRINT_CHUNK_SIZE`) with a 10 ms delay between chunks (`NETWORK_PRINT_CHUNK_DELAY_MS`), so a large receipt does not overrun the printer's buffer. `validateNetworkPrinterTarget()` (enforced on `/api/printers` configuration and `printViaNetwork()` dispatch) rejects cloud metadata endpoints, unspecified/broadcast addresses, and Kahera's own local listening ports across canonical and non-canonical (shorthand, octal, hexadecimal, and integer) IPv4 forms while preserving hostnames, custom ports, LAN/Tailscale/IPv6 addresses, and link-local printers. |
 | CUPS | `lp -d <printer> -o raw <tmpfile>`, using an exclusive (`wx`, `0600`) temporary file with a per-job UUID suffix that is unlinked only if created. |
 | Windows | `OpenPrinterW` with `pDataType` set to `RAW`, reading an exclusive (`wx`, `0600`) temporary file with a per-job UUID suffix that is unlinked only if created. Before `StartDocPrinter`, the helper refuses a queue that is set to Use Printer Offline, offline, or not available. For those three refusals only, when the queue's port is a Standard TCP/IP port in RAW mode, `main/printers/windows-queue-bypass.ts` sends the same bytes once to that port with `printViaNetwork()`. No job exists in the spool at that point, so the bypass cannot print a ticket twice. When the port has SNMP status enabled, the failure detail says so and the POS shows how to turn it off. |
 | macOS Mac App Store | IPP over the local CUPS UNIX domain socket `/private/var/run/cupsd` (with loopback HTTP fallback on `127.0.0.1:631`) using `main/printers/ipp-client.ts` and `document-format` `application/vnd.cups-raw`, because the macOS App Sandbox blocks shelling out to `lp` and blocks outbound TCP to `localhost:631` while permitting `/private/var/run/cupsd` under `com.apple.security.print`. |
@@ -292,7 +292,7 @@ scripts limited to `ascii`, transliteration enabled, unsupported text on a non-f
 skipped, and unsupported text on a financial row refuses the print.
 
 When a financial row contains text the printer cannot represent natively and raster rendering is
-disabled or fails, FloCafe refuses the whole receipt rather than printing a total that is not the
+disabled or fails, Kahera refuses the whole receipt rather than printing a total that is not the
 real total. The refusal message names the affected row, explains whether raster rendering failed or
 is unavailable, confirms that nothing was sent to the printer, and suggests retrying or using
 system/browser printing:

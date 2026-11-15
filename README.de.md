@@ -1,14 +1,14 @@
-# FloCafe
+# Kahera
 
 **Kostenloses, quelloffenes und offline-orientiertes Kassensystem für Cafés, Restaurants und kleine Küchen.**
 
 [English](README.md) | [Español](README.es.md) | [Português](README.pt.md) | [Français](README.fr.md) | [Türkçe](README.tr.md) | [Filipino](README.fil.md) | **Deutsch** | [简体中文](README.zh-CN.md)
 
-FloCafe läuft direkt auf dem Computer des Betriebs. Bestellungen, Kunden, Belege und Sicherungen werden in einer lokalen SQLite-Datenbank gespeichert. Dadurch können Kassenbetrieb und Küchenanzeigen auch ohne Internetverbindung weiterarbeiten. Für den grundlegenden Kassenbetrieb ist kein gehostetes oder cloudbasiertes Konto erforderlich. Optionale Integrationen wie Google-Drive-Sicherungen, der Versand von Belegen über WhatsApp und cloudbasierte Berichte können bei Bedarf aktiviert werden.
+Kahera läuft direkt auf dem Computer des Betriebs. Bestellungen, Kunden, Belege und Sicherungen werden in einer lokalen SQLite-Datenbank gespeichert. Dadurch können Kassenbetrieb und Küchenanzeigen auch ohne Internetverbindung weiterarbeiten. Für den grundlegenden Kassenbetrieb ist kein gehostetes oder cloudbasiertes Konto erforderlich. Optionale Integrationen wie Google-Drive-Sicherungen, der Versand von Belegen über WhatsApp und cloudbasierte Berichte können bei Bedarf aktiviert werden.
 
-## FloCafe herunterladen
+## Kahera herunterladen
 
-Laden Sie das neueste Installationsprogramm von [GitHub Releases](https://github.com/FreeOpenSourcePOS/FloCafe/releases) herunter oder installieren Sie FloCafe über den App-Store Ihrer Plattform. Sie können auch den [Mac App Store](https://apps.apple.com/in/app/flo-cafe/id6763136018), den [Microsoft Store](https://apps.microsoft.com/detail/9n1md6585p4q) oder den [Snap Store](https://snapcraft.io/flocafe) verwenden.
+Laden Sie das neueste Installationsprogramm von [GitHub Releases](https://github.com/FreeOpenSourcePOS/Kahera/releases) herunter oder installieren Sie Kahera über den App-Store Ihrer Plattform. Sie können auch den [Mac App Store](https://apps.apple.com/in/app/kahera/id6763136018), den [Microsoft Store](https://apps.microsoft.com/detail/9n1md6585p4q) oder den [Snap Store](https://snapcraft.io/kahera) verwenden.
 
 Die Releases enthalten Windows-Installationsprogramme, macOS-DMGs sowie AppImage-, `.deb`-, `.rpm`- und Snap-Pakete für Linux. Informationen zu Linux-Paketen, Updates, FUSE, Druckberechtigungen und dem Verhalten der Systemleiste finden Sie im [Linux-Installations- und Supportleitfaden](docs/linux.md).
 
@@ -20,7 +20,7 @@ Die Releases enthalten Windows-Installationsprogramme, macOS-DMGs sowie AppImage
 | Arbeitsspeicher | 4 GB RAM |
 | Speicherplatz | 500 MB frei, zusätzlich Platz für lokale Sicherungen |
 
-Node.js wird nur zur Entwicklung von FloCafe benötigt, nicht zum Ausführen einer paketierten Version.
+Node.js wird nur zur Entwicklung von Kahera benötigt, nicht zum Ausführen einer paketierten Version.
 
 <details>
 <summary>Direkt heruntergeladene Version deinstallieren</summary>
@@ -29,14 +29,14 @@ Installationen aus dem App Store und Microsoft Store sollten über den jeweilige
 
 ```sh
 # macOS
-curl -fsSL https://github.com/FreeOpenSourcePOS/FloCafe/releases/latest/download/uninstall-macos.sh -o uninstall-macos.sh
+curl -fsSL https://github.com/FreeOpenSourcePOS/Kahera/releases/latest/download/uninstall-macos.sh -o uninstall-macos.sh
 chmod +x uninstall-macos.sh
 ./uninstall-macos.sh
 ```
 
 ```powershell
 # Windows PowerShell
-irm https://github.com/FreeOpenSourcePOS/FloCafe/releases/latest/download/uninstall-windows.ps1 -OutFile uninstall-windows.ps1
+irm https://github.com/FreeOpenSourcePOS/Kahera/releases/latest/download/uninstall-windows.ps1 -OutFile uninstall-windows.ps1
 powershell -ExecutionPolicy Bypass -File .\uninstall-windows.ps1
 ```
 
@@ -56,37 +56,37 @@ Beide Skripte fragen, ob die Anwendungsdaten behalten werden sollen. Wählen Sie
 
 ## Projektstatus
 
-FloCafe wird aktiv entwickelt und bereits in realen Installationen eingesetzt. Kundendaten und die Sicherheit von Aktualisierungen werden durch explizite Datenbankmigrationen und Wiederherstellungsmechanismen sorgfältig geschützt. Teile der internen und erweiterungsorientierten Architektur entwickeln sich noch weiter; Implementierungsdetails und interne Verträge können sich daher ändern.
+Kahera wird aktiv entwickelt und bereits in realen Installationen eingesetzt. Kundendaten und die Sicherheit von Aktualisierungen werden durch explizite Datenbankmigrationen und Wiederherstellungsmechanismen sorgfältig geschützt. Teile der internen und erweiterungsorientierten Architektur entwickeln sich noch weiter; Implementierungsdetails und interne Verträge können sich daher ändern.
 
 ## Offline-orientiertes Design
 
 Der grundlegende Kassenbetrieb und lokale Daten funktionieren offline. Auftragserfassung, Abrechnung, KDS-Koordination und Belegdruck sind nicht von Internet oder externen Cloud-Diensten abhängig.
 
 - Die SQLite-Datenbank und lokale Sicherungen liegen im Benutzerdatenverzeichnis, getrennt von den installierten Programmbinärdateien. Normale Aktualisierungen entfernen sie nicht; vor einer Neuinstallation, einem Computerwechsel oder einem Wechsel des Vertriebswegs sollte eine manuelle Sicherung erstellt werden.
-- FloCafe erstellt vor Schema-Migrationen automatisch eine Sicherung mit Zeitstempel.
+- Kahera erstellt vor Schema-Migrationen automatisch eine Sicherung mit Zeitstempel.
 - Dienste wie Google-Drive-Sicherungen, der Belegversand über WhatsApp und cloudbasierte Berichte kommunizieren nur dann über das Netzwerk, wenn sie vom Betriebsinhaber ausdrücklich konfiguriert und aktiviert wurden.
 
 ## Sprachen und regionale Unterstützung
 
-FloCafe bietet Benutzeroberflächen auf Englisch, Spanisch, Französisch, brasilianischem Portugiesisch, Filipino, Türkisch, Persisch (Farsi) mit RTL-Unterstützung, Deutsch, Italienisch, Japanisch, vereinfachtem Chinesisch, Koreanisch und Bahasa Indonesia. Die UI-Sprache ist unabhängig von Land und regionalen Einstellungen des Geschäfts. Steuerberechnungsregeln sind ein getrenntes Thema. Informationen zum Mitwirken an Übersetzungen oder zum Hinzufügen von Sprachen finden Sie im [Leitfaden für Internationalisierung und Übersetzungen](docs/architecture/internationalization.md).
+Kahera bietet Benutzeroberflächen auf Englisch, Spanisch, Französisch, brasilianischem Portugiesisch, Filipino, Türkisch, Persisch (Farsi) mit RTL-Unterstützung, Deutsch, Italienisch, Japanisch, vereinfachtem Chinesisch, Koreanisch und Bahasa Indonesia. Die UI-Sprache ist unabhängig von Land und regionalen Einstellungen des Geschäfts. Steuerberechnungsregeln sind ein getrenntes Thema. Informationen zum Mitwirken an Übersetzungen oder zum Hinzufügen von Sprachen finden Sie im [Leitfaden für Internationalisierung und Übersetzungen](docs/architecture/internationalization.md).
 
-FloCafe enthält Profile für 131 Länder und 109 Währungen. Jedes Profil legt Währung, Region und Standardzeitzone fest; der Betriebsinhaber kann die Zeitzone während der Einrichtung oder später in den Einstellungen ändern.
+Kahera enthält Profile für 131 Länder und 109 Währungen. Jedes Profil legt Währung, Region und Standardzeitzone fest; der Betriebsinhaber kann die Zeitzone während der Einrichtung oder später in den Einstellungen ändern.
 
 ## Steuerunterstützung
 
-FloCafe enthält eine allgemeine Berechnungs-Engine sowie signierte und versionierte regionale Steuerpakete für regionale Regeln, Steuerkategorien und Rundungsrichtlinien. Die Länderabdeckung wird über den Katalog erweitert und die Verfügbarkeit variiert. Manuelle Steuerregeln und Steuersätze können ebenfalls lokal konfiguriert werden.
+Kahera enthält eine allgemeine Berechnungs-Engine sowie signierte und versionierte regionale Steuerpakete für regionale Regeln, Steuerkategorien und Rundungsrichtlinien. Die Länderabdeckung wird über den Katalog erweitert und die Verfügbarkeit variiert. Manuelle Steuerregeln und Steuersätze können ebenfalls lokal konfiguriert werden.
 
-> **Hinweis:** FloCafe ist Software und keine Rechts- oder Steuerberatung. Steuerpakete und Konfigurationswerkzeuge bescheinigen allein keine Einhaltung lokaler Vorschriften; der Betreiber muss die für seinen Betrieb geltenden Anforderungen prüfen.
+> **Hinweis:** Kahera ist Software und keine Rechts- oder Steuerberatung. Steuerpakete und Konfigurationswerkzeuge bescheinigen allein keine Einhaltung lokaler Vorschriften; der Betreiber muss die für seinen Betrieb geltenden Anforderungen prüfen.
 
 Informationen zur Erstellung, Validierung und zum Schema der Pakete finden Sie im [Entwicklerleitfaden für Steuerpakete](docs/reference/tax-packs.md).
 
 ## Entwicklung
 
-Für die Entwicklung von FloCafe benötigen Sie Node.js 22 oder höher:
+Für die Entwicklung von Kahera benötigen Sie Node.js 22 oder höher:
 
 ```sh
-git clone https://github.com/FreeOpenSourcePOS/FloCafe.git
-cd FloCafe
+git clone https://github.com/FreeOpenSourcePOS/Kahera.git
+cd Kahera
 npm install
 npm run dev
 ```
@@ -115,7 +115,7 @@ Beiträge sind willkommen. Bitte lesen Sie [CONTRIBUTING.md](CONTRIBUTING.md), b
 - **Kleine Fehlerbehebungen, Dokumentationsverbesserungen und fokussierte Tests** können frei begonnen werden.
 - **Neue Funktionen, Änderungen am Datenbankschema und architektonische Refactorings** erfordern vor der Umsetzung eine Diskussion und Genehmigung durch die Maintainer.
 
-Wenn FloCafe für Sie nützlich ist, können Sie das Repository mit einem Stern markieren.
+Wenn Kahera für Sie nützlich ist, können Sie das Repository mit einem Stern markieren.
 
 ## Hilfe und Dokumentation
 
@@ -125,9 +125,9 @@ Wenn FloCafe für Sie nützlich ist, können Sie das Repository mit einem Stern 
 - [Internationalisierung und Übersetzungen](docs/architecture/internationalization.md)
 - [Entwicklerleitfaden für Steuerpakete](docs/reference/tax-packs.md)
 - [Einrichtung der Google-Drive-Sicherung](docs/google-drive-setup.md)
-- [GitHub Issues](https://github.com/FreeOpenSourcePOS/FloCafe/issues)
-- [GitHub Discussions](https://github.com/FreeOpenSourcePOS/FloCafe/discussions)
+- [GitHub Issues](https://github.com/FreeOpenSourcePOS/Kahera/issues)
+- [GitHub Discussions](https://github.com/FreeOpenSourcePOS/Kahera/discussions)
 
 ## Lizenz
 
-FloCafe ist Open-Source-Software unter der [MIT-Lizenz](LICENSE).
+Kahera ist Open-Source-Software unter der [MIT-Lizenz](LICENSE).

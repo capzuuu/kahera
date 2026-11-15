@@ -1,6 +1,6 @@
 # System overview
 
-FloCafe is an offline-first Electron desktop point-of-sale application. One Electron main process
+Kahera is an offline-first Electron desktop point-of-sale application. One Electron main process
 hosts a SQLite database, three HTTP servers, and a set of native window surfaces. There is no
 separate backend host: the API server, the kitchen display server, and the server app server all
 run inside the same process as the UI.
@@ -22,7 +22,7 @@ KDS client behaves identically whichever port it connects to.
 ```mermaid
 flowchart TB
   subgraph main["Electron main process"]
-    DB[(SQLite<br/>flo.db)]
+    DB[(SQLite<br/>kahera.db)]
     API["Express API :3001<br/>/api + static export"]
     KDS["KDS server :3002<br/>/api/kds + /kds-standalone"]
     APP["Server App :3003<br/>/api (proxy)"]

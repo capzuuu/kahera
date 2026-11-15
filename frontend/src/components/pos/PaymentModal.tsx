@@ -8,7 +8,6 @@ import {
   CheckCircle2,
   User,
   Percent,
-  Send,
   ChevronDown,
   Users,
   Minus,
@@ -47,8 +46,6 @@ import {
   type CheckoutQuickTenderOption,
   type CheckoutStatusBanner,
 } from '@/components/pos/CheckoutPaymentStation';
-import { useWhatsAppReady } from '@/hooks/useWhatsAppReady';
-import { sendBillViaFlo, shareBillViaWhatsApp } from '@/lib/whatsapp-share';
 import { useAuthStore } from '@/store/auth';
 import { tenantCan } from '@/lib/permissions';
 import { hasRole, ROLE_ACCESS } from '@shared/role-permissions';
@@ -205,22 +202,7 @@ export default function PaymentModal({
   const tCommon = useTranslations('common');
   const tOrders = useTranslations('orders');
   const tReceipt = useTranslations('receipt');
-  const tWhatsappSend = useTranslations('whatsapp.send');
-
-  // sendBillViaFlo (shared with OrdersPage) takes a translator callback;
-  // bridge the typed `whatsapp.send` namespace to that contract.
-  const whatsappSendT = (key: string): string =>
-    tWhatsappSend(
-      key.replace(/^whatsapp\.send\./, '') as
-        | 'success'
-        | 'failed'
-        | 'error.notConnected'
-        | 'error.notOnWhatsapp'
-        | 'error.blocked'
-        | 'error.rateLimited',
-    );
   const { currentTenant, user } = useAuthStore();
-  const isWhatsAppReady = useWhatsAppReady();
   const unitAdapter = useCurrencyUnitAdapter();
   const {
     toDisplay: toDisplayUnit,
@@ -304,7 +286,6 @@ export default function PaymentModal({
 
   const [justPaid, setJustPaid] = useState(false);
   const [paidAmount, setPaidAmount] = useState<number | null>(null);
-  const [sendingWa, setSendingWa] = useState(false);
   const [pointsEarned, setPointsEarned] = useState(0);
   const [payments, setPayments] = useState<Payment[]>(buildAttemptPaymentRows(pendingAttempt, []));
   // Tracks whether the cashier has manually typed a split amount — once true, we stop
@@ -1945,39 +1926,6 @@ export default function PaymentModal({
     country: currentTenant?.country || '',
   };
 
-  const handleSendWhatsApp = async () => {
-    const phone = cartCustomer?.phone;
-    if (!phone) {
-      toast.error(tWhatsappSend('customerPhoneRequired'));
-      return;
-    }
-    setSendingWa(true);
-    try {
-      await sendBillViaFlo(bill, phone, tenantForShare, whatsappSendT, { pointsEarned }, locale);
-    } finally {
-      setSendingWa(false);
-    }
-  };
-
-  const handleShareWhatsApp = async () => {
-    if (!cartCustomer?.phone) {
-      toast.error(tWhatsappSend('customerPhoneRequired'));
-      return;
-    }
-    try {
-      const opened = await shareBillViaWhatsApp(
-        bill,
-        { phone: cartCustomer.phone, country_code: cartCustomer.country_code },
-        tenantForShare,
-        { pointsEarned },
-        locale,
-      );
-      if (!opened) toast.error(tOrders('whatsappFailed'));
-    } catch {
-      toast.error(tOrders('whatsappFailed'));
-    }
-  };
-
   const dismissHandlerRef = useRef<() => boolean>(() => true);
   useEffect(() => {
     dismissHandlerRef.current = () => {
@@ -3305,28 +3253,6 @@ export default function PaymentModal({
                   </p>
                   <p className="text-sm text-muted-foreground">{t('paid')}</p>
                 </div>
-                {cartCustomer?.phone &&
-                  (isWhatsAppReady ? (
-                    <Button
-                      onClick={handleSendWhatsApp}
-                      disabled={sendingWa}
-                      className="min-h-11 w-full bg-emerald-600 hover:bg-emerald-700"
-                      size="lg"
-                    >
-                      <Send size={16} className="me-2" />
-                      {sendingWa ? t('processingPayment') : t('sendViaWhatsApp')}
-                    </Button>
-                  ) : (
-                    <Button
-                      onClick={handleShareWhatsApp}
-                      variant="outline"
-                      className="min-h-11 w-full"
-                      size="lg"
-                    >
-                      <Send size={16} className="me-2" />
-                      {tCommon('shareViaWhatsApp')}
-                    </Button>
-                  ))}
                 <Button onClick={onPaid} variant="outline" className="min-h-11 w-full" size="lg">
                   {tCommon('done')}
                 </Button>

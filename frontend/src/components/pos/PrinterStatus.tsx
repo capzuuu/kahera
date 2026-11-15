@@ -23,6 +23,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { usePrinterStore } from '@/hooks/usePrinter';
+import { usePosSettingsStore } from '@/store/pos-settings';
 import type { PrinterStatus } from '@/lib/printer/PrinterService';
 import toast from 'react-hot-toast';
 import { useTranslations, type AppConfig } from 'use-intl';
@@ -57,6 +58,7 @@ const STATUS_CONFIG: Record<
 };
 
 export default function PrinterStatus() {
+  const printerEnabled = usePosSettingsStore((s) => s.printerEnabled);
   // Printer status and hardware configuration are synced at the dashboard layout level.
   const {
     status,
@@ -106,6 +108,8 @@ export default function PrinterStatus() {
 
   const isConnected = !hardwarePrinter && status === 'connected';
   const isConnecting = status === 'connecting';
+
+  if (!printerEnabled) return null;
 
   return (
     <DropdownMenu>

@@ -1178,7 +1178,7 @@ async function main() {
 
     const removeConcurrentWriter = installConcurrentOrderBoundaryMutation(
       db,
-      path.join(testDir, 'flo.db'),
+      path.join(testDir, 'kahera.db'),
       concOrderId,
     );
     let resConcA: any;

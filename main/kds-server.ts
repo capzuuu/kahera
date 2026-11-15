@@ -1098,7 +1098,7 @@ export function startKdsServer(): Promise<void> {
       app.get('/', (_req: Request, res: Response) => {
         res.send(`
           <html><body style="font-family:sans-serif;padding:2rem">
-            <h2>Flo KDS – Build not found</h2>
+            <h2>Kahera KDS – Build not found</h2>
             <p>Run <code>npm run build:frontend</code> then restart the app.</p>
           </body></html>
         `);

@@ -1,6 +1,6 @@
 # Cloud integrations
 
-Every network feature FloCafe has, what it talks to, what enables it, and what happens when the
+Every network feature Kahera has, what it talks to, what enables it, and what happens when the
 network is absent. The principle that keeps all of them optional is
 [0001: offline-first core](../decisions/0001-offline-first-core.md); this page is the current
 inventory, not the rationale.
@@ -77,8 +77,8 @@ Settings → QR Menu publishes a customer-facing PDF from the catalog or replace
 PDF up to 15 MB. It uses the existing `drive.file` grant. The generated menu defaults to the
 phone-oriented Mobile-First Cafe template; Classic Bistro and Standard layouts are also available.
 
-The menu lives in a dedicated `<store>_flocafe_menu` folder marked with
-`flo_destination_kind=flocafe_menu`. The folder remains private. Only the PDF marked
+The menu lives in a dedicated `<store>_kahera_menu` folder marked with
+`flo_destination_kind=kahera_menu`. The folder remains private. Only the PDF marked
 `flo_file_kind=public_menu_pdf` receives an `anyone`/`reader` permission. Backup discovery excludes
 the menu folder, and every overwrite or permission change revalidates the PDF marker, MIME type,
 installation marker, trash state, and parents before touching the stored file ID.
@@ -95,7 +95,7 @@ with `offline` and serializes them with backup and restore work.
 
 ## Anonymous telemetry
 
-Posts anonymous usage and error events to `https://telemetry.flopos.com/collect`.
+Posts anonymous usage and error events to `https://telemetry.kaherapos.com/collect`.
 
 **Enabled by** the `telemetry_enabled` setting, read as on when the value is `'true'`. It ships
 **on** for a new install, which writes `telemetry_enabled` as `'true'`. An install that already
@@ -106,7 +106,7 @@ that flips the default uses `INSERT OR IGNORE`; an install that already ran the 
 **Offline behaviour.** Events are dropped, not queued. There is no telemetry outbox.
 
 The same `telemetry_enabled` switch also gates PostHog usage events and the installation email,
-described under PostHog below. The collector at `https://telemetry.flopos.com/collect` sends no name
+described under PostHog below. The collector at `https://telemetry.kaherapos.com/collect` sends no name
 and no email.
 
 **Run mode and install source.** Every telemetry event and every FloAdmin registration carries two
@@ -467,10 +467,10 @@ cancelled when Offline mode turns on or during shutdown rather than left to fail
 
 **Credential handling and session lifecycle.** Session files live under
 `path.join(app.getPath('userData'), 'whatsapp-auth')`, created with mode `0o700`. On macOS DMG and ZIP
-builds this resolves to `~/Library/Application Support/Flo Cafe/whatsapp-auth`; on Mac App Store
+builds this resolves to `~/Library/Application Support/Kahera/whatsapp-auth`; on Mac App Store
 sandbox builds (`com.flo.desktop`) it resolves inside the app container at
-`~/Library/Containers/com.flo.desktop/Data/Library/Application Support/Flo Cafe/whatsapp-auth`. The
-session credential is not encrypted at rest, which is a consequence of the protocol library FloCafe
+`~/Library/Containers/com.flo.desktop/Data/Library/Application Support/Kahera/whatsapp-auth`. The
+session credential is not encrypted at rest, which is a consequence of the protocol library Kahera
 uses and a reason the containing filesystem matters:
 
 - **Pairing and restart sequence (`515`).** Credential writes queued from an active socket's

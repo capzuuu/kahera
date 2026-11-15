@@ -1,6 +1,6 @@
-# FloCafe agent guide
+# Kahera agent guide
 
-FloCafe is an open-source, offline-first Electron desktop POS.
+Kahera is an open-source, offline-first Electron desktop POS.
 
 ## Orientation & layout
 
@@ -39,9 +39,9 @@ implementation must not violate.
 1. **Offline-first operation:** Core POS operation (orders, billing, KDS, printing) must function without internet connectivity. Optional network features (Google Drive, WhatsApp, cloud reporting) run only when explicitly configured and must fail gracefully when offline.
 2. **Data safety:** Existing customer data must survive upgrades. Never reset, truncate, or drop user databases as a shortcut for migration design.
 3. **Architecture boundaries:** UI language, tenant regional settings, and tax/compliance behavior are separate, decoupled domains.
-4. **Business timestamps:** Persisted timestamps follow FloCafe's canonical storage conventions; configured store timezone applies to business-local presentation, day/shift boundaries, and reporting intervals.
+4. **Business timestamps:** Persisted timestamps follow Kahera's canonical storage conventions; configured store timezone applies to business-local presentation, day/shift boundaries, and reporting intervals.
 5. **Backend authority:** Security-critical, payment, and tax calculations remain backend-authoritative.
-6. **Orders are never ownership-gated:** FloCafe is an open system for order visibility — any staff role with order access can see and act on any order, regardless of who created it. Authorization is restricted by role (page/feature access) and by specific action (e.g. KDS stage transitions are chef/manager/owner-only, narrowed further by station/category assignment), never by comparing `order.user_id`/item creator against the current user. Accountability comes from audit attribution (every write is recorded against the authenticated actor), not from hiding orders between staff. Do not add or reintroduce a `role === 'server' && order.user_id !== user.userId`-style check anywhere in the backend; see `docs/reference/product-invariants.md` and [`docs/reference/roles-and-permissions.md`](docs/reference/roles-and-permissions.md).
+6. **Orders are never ownership-gated:** Kahera is an open system for order visibility — any staff role with order access can see and act on any order, regardless of who created it. Authorization is restricted by role (page/feature access) and by specific action (e.g. KDS stage transitions are chef/manager/owner-only, narrowed further by station/category assignment), never by comparing `order.user_id`/item creator against the current user. Accountability comes from audit attribution (every write is recorded against the authenticated actor), not from hiding orders between staff. Do not add or reintroduce a `role === 'server' && order.user_id !== user.userId`-style check anywhere in the backend; see `docs/reference/product-invariants.md` and [`docs/reference/roles-and-permissions.md`](docs/reference/roles-and-permissions.md).
 7. **Reuse before adding:** Reuse existing helpers, utilities, and dependencies before introducing new packages.
 8. **Scope discipline:** Implement only the approved task. Do not make opportunistic refactors across unrelated files.
 9. **Recovery must stay usable:** Backup restore is a deliberate disaster-recovery action. Prefer restoring the selected backup as the authoritative store state over merging it with the failed installation. Do not add speculative compatibility or security-preservation layers that can reject an otherwise valid backup without a demonstrated, material risk and explicit product approval. Keep the essential safeguards: authorization and confirmation before restore, integrity and schema validation, an automatic pre-restore recovery copy, forward migrations, and invalidation of transient sessions and pairing tokens. Recovery success takes priority over preserving easily reconfigurable local state such as staff activation, kitchen-station assignments, or device settings.
@@ -60,7 +60,7 @@ implementation must not violate.
 - **Private specs boundary:** Never add the private `specs` repository as a submodule, build dependency, CI dependency, or runtime dependency.
 - **Security checks:** Do not bypass platform or OS security checks merely to make a local development binary run.
 - **Legacy code check:** Before modifying legacy-looking files, verify they are part of the active build, import, or packaging path (search imports, routes, and `package.json`).
-- **Indexed search:** XERJ is optional discovery tooling. When it is available, use it for unfamiliar or cross-cutting code and scope queries to the `flocafe` prefix; continue to use `rg` for exact filenames, literals, and symbols. Verify retrieved passages against current source and tests before editing. Never invoke XERJ feedback or other external-write tools without explicit authorization. See `docs/guides/code-search.md`.
+- **Indexed search:** XERJ is optional discovery tooling. When it is available, use it for unfamiliar or cross-cutting code and scope queries to the `kahera` prefix; continue to use `rg` for exact filenames, literals, and symbols. Verify retrieved passages against current source and tests before editing. Never invoke XERJ feedback or other external-write tools without explicit authorization. See `docs/guides/code-search.md`.
 - **Discovered issues:** Note adjacent bugs or potential improvements in your report rather than expanding implementation scope.
 - **Changelog & commit governance:** Use Conventional Commits (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`, `ci:`). Release notes and `CHANGELOG.md` are automated via `git-cliff` (`npm run changelog`) and CI; do not manually draft changelogs.
 - **Code comments:** Code should be self-explanatory; write comments only when strictly necessary to explain non-obvious intent or rationale. Keep comments concise (1-2 lines maximum), and avoid historical tags (PR/issue numbers, phases) or redundant descriptions of what the code is doing.
@@ -68,7 +68,7 @@ implementation must not violate.
 
 ## Commands
 
-FloCafe requires **Node.js 22 or later**.
+Kahera requires **Node.js 22 or later**.
 
 ```sh
 npm run clean            # Kill processes holding ports 3001, 3002, 3003
@@ -85,8 +85,8 @@ npm run i18n:check
 npm run docs:check      # Markdown lint, relative links, index completeness, doc policy
 npm run search:doctor   # Check optional local XERJ and Codex MCP setup
 npm run search:serve    # Run the optional loopback-only XERJ server
-npm run search:index    # Refresh the local flocafe code/documentation index
-npm run search:query -- "query" # Search the local flocafe index
+npm run search:index    # Refresh the local kahera code/documentation index
+npm run search:query -- "query" # Search the local kahera index
 npm run test:e2e:browser # E2E tests (runs Playwright from frontend/)
 npm run i18n:add -- de   # scaffold an approved new language locally
 ```

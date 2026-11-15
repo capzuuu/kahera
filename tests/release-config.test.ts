@@ -1202,12 +1202,10 @@ exit 1
     `mac artifact template must be safe: ${JSON.stringify(macArtifact)}`,
   );
   const winArtifact = build?.win?.artifactName;
-  assert.ok(
-    typeof winArtifact === 'string' &&
-      winArtifact.includes('${arch}') &&
-      winArtifact.includes('win') &&
-      !/\s/.test(winArtifact.replace(/\$\{[^}]+\}/g, '')),
-    `win artifact template must be safe: ${JSON.stringify(winArtifact)}`,
+  assert.equal(
+    winArtifact,
+    'Kahera-Setup.${ext}',
+    `win artifact template must be Kahera-Setup.\${ext}: ${JSON.stringify(winArtifact)}`,
   );
 
   const matrixWorkflow = loadWorkflow('full-cross-platform-matrix.yml');
@@ -1483,7 +1481,7 @@ cat "$CI_TEST_RUNS_FIXTURE"
   assert.ok(evidenceUpload, 'CI must upload release regression evidence');
   assert.equal(evidenceUpload.with.path, '${{ runner.temp }}/flocafe-release-regressions/');
 
-  const metaFilePath = path.join(__dirname, '../assets/com.flo.desktop.metainfo.xml');
+  const metaFilePath = path.join(__dirname, '../assets/com.kahera.desktop.metainfo.xml');
   const originalMetaContent = fs.readFileSync(metaFilePath, 'utf8');
   const testNotesPath = path.join(os.tmpdir(), `flocafe-release-notes-${Date.now()}.md`);
   try {

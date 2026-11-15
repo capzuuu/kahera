@@ -21,6 +21,7 @@ import toast from 'react-hot-toast';
 import { useAuthStore } from '@/store/auth';
 import { tenantCan } from '@/lib/permissions';
 import { usePrinterStore } from '@/hooks/usePrinter';
+import { usePosSettingsStore } from '@/store/pos-settings';
 import type { CashSession } from '@/hooks/useCashSession';
 import { printerService } from '@/lib/printer/PrinterService';
 import api from '@/lib/api';
@@ -62,6 +63,7 @@ export default function StatusBar({ showUpdateBadge = true }: { showUpdateBadge?
 
   const { user, currentTenant } = useAuthStore();
   const { status: printerConnStatus, deviceInfo, defaultPrinter, printMethod } = usePrinterStore();
+  const printerEnabled = usePosSettingsStore((s) => s.printerEnabled);
 
   const [status, setStatus] = useState<StatusInfo | null>(null);
   const [session, setSession] = useState<CashSession | null | undefined>(undefined);
@@ -497,9 +499,16 @@ export default function StatusBar({ showUpdateBadge = true }: { showUpdateBadge?
           <div
             data-testid="status-bar-printer"
             className="flex items-center gap-1.5 px-1.5 py-0.5"
-            title={printerTitle}
+            title={!printerEnabled ? tSettings('enablePrinterHint') : printerTitle}
           >
-            {isPrinterReady ? (
+            {!printerEnabled ? (
+              <>
+                <Printer size={13} className="text-muted-foreground/60" />
+                <span className="hidden sm:inline text-muted-foreground/60 text-xs">
+                  {tSettings('printerOffline')}
+                </span>
+              </>
+            ) : isPrinterReady ? (
               <>
                 <PrinterCheck size={13} className="text-emerald-600 dark:text-emerald-400" />
                 <span className="hidden sm:inline font-medium text-emerald-700 dark:text-emerald-300">

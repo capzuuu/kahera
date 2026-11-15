@@ -224,7 +224,7 @@ Module._load = function (request, parent, isMain) {
         prepare: () => ({ get: () => undefined }),
       }),
       getBackupDir: () => path.join(testDir, 'backups'),
-      getDbPath: () => path.join(testDir, 'flo.db'),
+      getDbPath: () => path.join(testDir, 'kahera.db'),
       discoverDowngradeBackupsAsync: async (options) => {
         if (newerDbMode === 'discover-shutdown') {
           const hasSignal = Boolean(options?.signal && typeof options.signal.aborted === 'boolean');

@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useMemo, useRef } from 'react';
-import { X, CheckCircle2, Percent, Wallet, ChevronDown, Send } from 'lucide-react';
+import { X, CheckCircle2, Percent, Wallet, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import api from '@/lib/api';
 import { useCartStore } from '@/store/cart';
@@ -805,26 +805,6 @@ export default function PrepaidCheckoutModal({
   }, [onClose, locked]);
 
   if (success) {
-    const shareReceipt = async () => {
-      if (!success.customer?.phone) return;
-      try {
-        const { shareBillViaWhatsApp } = await import('@/lib/whatsapp-share');
-        const opened = await shareBillViaWhatsApp(
-          success.bill,
-          { phone: success.customer.phone, country_code: success.customer.country_code || '' },
-          {
-            business_name: currentTenant?.business_name || tCommon('businessNameFallback'),
-            currency: currentTenant?.currency || '',
-            country: currentTenant?.country || '',
-          },
-          { pointsEarned: success.pointsEarned },
-          locale,
-        );
-        if (!opened) toast.error(tOrders('whatsappFailed'));
-      } catch {
-        toast.error(tOrders('whatsappFailed'));
-      }
-    };
     return (
       <div
         ref={modalRef}
@@ -845,16 +825,6 @@ export default function PrepaidCheckoutModal({
             {currencyFmt(Number(success.bill.total) || 0)}
           </p>
           <p className="text-sm text-muted-foreground">{t('paid')}</p>
-          {success.customer?.phone && (
-            <Button
-              onClick={() => void shareReceipt()}
-              variant="outline"
-              className="min-h-11 w-full"
-            >
-              <Send size={16} className="me-2" />
-              {tCommon('shareViaWhatsApp')}
-            </Button>
-          )}
           <Button onClick={onClose} className="min-h-11 w-full">
             {tCommon('done')}
           </Button>

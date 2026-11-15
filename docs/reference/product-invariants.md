@@ -1,6 +1,6 @@
 # Product invariants
 
-These are deliberate product decisions that shape how FloCafe behaves and are not derivable from
+These are deliberate product decisions that shape how Kahera behaves and are not derivable from
 reading the code. Each one names where it is enforced and how to check that the codebase still
 complies, so an implementation that contradicts one is caught rather than assumed.
 
@@ -29,7 +29,7 @@ accident.
 [roles and permissions](roles-and-permissions.md)) can view and act on **every** order, regardless
 of who created it. No "this is my order" restriction exists anywhere in the system.
 
-**Reason:** FloCafe is an open system by design. Restricting staff to the orders they personally
+**Reason:** Kahera is an open system by design. Restricting staff to the orders they personally
 created adds friction without a security benefit for this product: a waiter covering a colleague's
 table and a manager checking any order are both normal work. Accountability comes from knowing who
 did what, not from hiding data between staff who already share a till and a kitchen.
@@ -68,7 +68,7 @@ authenticated user is subject to the same review as a change to this entry.
 
 ## A selected backup is authoritative during restore
 
-**Rule:** Restoring a valid, supported backup replaces the store state with that backup. FloCafe
+**Rule:** Restoring a valid, supported backup replaces the store state with that backup. Kahera
 does not merge users, staff activation, kitchen stations, station assignments, settings, inventory
 history, or other operational records from the database being replaced. Older backups migrate
 forward after replacement. Restore invalidates sessions and temporary pairing credentials, clears
@@ -103,7 +103,7 @@ credential invalidation, migrations, and the pre-restore recovery copy remain ma
 
 ## Role templates and user permissions are owner-configurable
 
-**Rule:** FloCafe keeps its five fixed staff identities (owner, manager, cashier, server, chef),
+**Rule:** Kahera keeps its five fixed staff identities (owner, manager, cashier, server, chef),
 but their ordinary feature permissions are configurable by an owner: role defaults can be
 overridden, and a single user can additionally receive explicit allow/deny exceptions. For each
 permission, the effective value resolves protected-owner rule, then user override, then role

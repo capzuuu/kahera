@@ -276,7 +276,7 @@ export function PermissionMatrix({ staff }: { staff: Staff[] }) {
             <tbody>
               {areas.map((area) => <Fragment key={area}>
                 <tr><th colSpan={3} className="border-y border-border bg-muted px-4 py-2 text-start text-xs font-semibold uppercase tracking-wide text-muted-foreground">{permissionAreaLabel(area, t)}</th></tr>
-                {catalog.filter((permission) => permission.area === area).map((permission) => {
+                {catalog.filter((permission) => permission.area === area && !permission.id.startsWith('whatsapp.')).map((permission) => {
                   const selected = overrides[permission.id] || 'inherit';
                   const inherited = effectiveById.get(permission.id);
                   const effective = selected === 'allow' ? true : selected === 'deny' ? false : inherited?.allowed === true;

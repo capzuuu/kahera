@@ -18,7 +18,7 @@ Record the specific instrument, not the topic: the statute section, the rate sch
 date. A pack that cites "VAT in Europe" is unusable; a pack that cites the exact schedule with its
 publication reference is auditable.
 
-FloCafe is software, not certified legal or tax advice. The disclaimer in the contribution terms is
+Kahera is software, not certified legal or tax advice. The disclaimer in the contribution terms is
 part of the deliverable, not a formality.
 
 ## 2. Scope the jurisdiction
@@ -97,7 +97,7 @@ contain nested quantifiers (check 25).
 ## 7. Publish
 
 Packs are published as GitHub releases in the separate
-`FreeOpenSourcePOS/FloCafe-Plugins` repository, not in this one. Commit the pack JSON to
+`FreeOpenSourcePOS/Kahera-Plugins` repository, not in this one. Commit the pack JSON to
 `main/tax-packs/` here so the source is versioned with the engine that consumes it.
 
 Then create a release whose tag matches:
@@ -110,8 +110,8 @@ The `<pack-id>` segment matches `^[a-z0-9][a-z0-9-]*$` and `<X.Y.Z>` matches `^\
 format is enforced, not advisory: `scripts/tax-packs/prepare-release.cjs` matches the tag against
 `TAG_PATTERN` and throws if it does not conform.
 
-The release process runs in the FloCafe-Plugins repository through
-[`.github/workflows/tax-pack-release.yml`](https://github.com/FreeOpenSourcePOS/FloCafe-Plugins/blob/main/.github/workflows/tax-pack-release.yml):
+The release process runs in the Kahera-Plugins repository through
+[`.github/workflows/tax-pack-release.yml`](https://github.com/FreeOpenSourcePOS/Kahera-Plugins/blob/main/.github/workflows/tax-pack-release.yml):
 
 1. The workflow tests `scripts/tax-packs/prepare-release.cjs` before it accesses the signing secret.
 2. The script resolves the tag to a pack id and version, checks that the tag version matches the
@@ -126,7 +126,7 @@ The release process runs in the FloCafe-Plugins repository through
    workflow concurrency only serializes identical tags. An unrelated official pack preserves
    community entries; an official pack replaces only community entries for the same country.
 
-FloCafe discovers the release by matching that same tag pattern when it pages the Releases API, so a
+Kahera discovers the release by matching that same tag pattern when it pages the Releases API, so a
 published release whose tag does not match is invisible to every store. Old released artifacts are
 immutable; publish a new version instead of changing a tagged asset.
 

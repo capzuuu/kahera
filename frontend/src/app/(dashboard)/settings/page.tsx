@@ -15,6 +15,7 @@ import { useOrdersLayoutPreference } from '@/hooks/useOrdersLayout';
 import { usePosSortPreference } from '@/hooks/usePosSort';
 import { POS_CATEGORY_SORTS, POS_ITEM_SORTS } from '@/lib/pos-sort';
 import { CustomerDisplayCard } from '@/components/settings/CustomerDisplayCard';
+import { LegalPolicyDialog, type LegalPolicyTab } from '@/components/LegalPolicyDialog';
 import type {
   KotLanguagePolicy,
   PrimaryLanguageSelection,
@@ -39,7 +40,7 @@ import {
   Check,
   Trash2,
   Plus,
-  ChefHat,
+  Grid3X3,
   QrCode,
   CheckCircle2,
   Cloud,
@@ -77,7 +78,6 @@ import { OfflineModeCard } from '@/components/settings/OfflineModeCard';
 import { HealthCheckDialog } from '@/components/settings/HealthCheckDialog';
 import { InitializeDatabaseDialog } from '@/components/settings/InitializeDatabaseDialog';
 import { CurrencyResetDialog } from '@/components/settings/CurrencyResetDialog';
-import { WhatsAppEnableCard } from '@/components/settings/WhatsAppEnableCard';
 import { TaxConfigurationPanel } from '@/components/settings/TaxConfigurationPanel';
 import { PaymentMethodsSettings } from '@/components/settings/PaymentMethodsSettings';
 import { ChargesSettingsCard } from '@/components/settings/ChargesSettingsCard';
@@ -401,7 +401,6 @@ export default function SettingsPage() {
   const router = useRouter();
   const { currentTenant, user, updateCurrentTenant } = useAuthStore();
   const posSettings = usePosSettingsStore();
-  const whatsappEnabled = posSettings.whatsappEnabled;
   const { printMethod, setPrintMethod } = usePrinterStore();
   const t = useTranslations('settings');
   const tPos = useTranslations('pos');
@@ -409,7 +408,6 @@ export default function SettingsPage() {
   const tCommon = useTranslations('common');
   const tRestore = useTranslations('restore');
   const tUpdate = useTranslations('update');
-  const tWhatsappSettings = useTranslations('whatsapp.settings');
   const tCustomerDisplay = useTranslations('customerDisplay');
   const tTax = useTranslations('tax');
   const tQrMenu = useTranslations('qrMenu');
@@ -431,8 +429,6 @@ export default function SettingsPage() {
   const canManagePaymentMethods = tenantCan(currentTenant, 'payment-methods.manage');
   const canManageKitchenStations = tenantCan(currentTenant, 'kitchen.stations.manage');
   const canManageKdsView = isAdmin || tenantCan(currentTenant, 'kitchen.use');
-  const canManageWhatsapp = tenantCan(currentTenant, 'whatsapp.manage');
-  const canUseWhatsapp = tenantCan(currentTenant, 'whatsapp.use');
   const { confirm, ConfirmDialog } = useConfirm();
 
   const [loyaltyEnabled, setLoyaltyEnabled] = useState(false);
@@ -1939,6 +1935,7 @@ export default function SettingsPage() {
     cloud_deletion_status: '',
   });
   const [cloudPrivacyHydrated, setCloudPrivacyHydrated] = useState(false);
+  const [legalDialogTab, setLegalDialogTab] = useState<LegalPolicyTab | null>(null);
 
   const [savingCloud, setSavingCloud] = useState(false);
   const [registeringCloud, setRegisteringCloud] = useState(false);
@@ -3297,7 +3294,7 @@ export default function SettingsPage() {
   }, [activeTab, canManageDatabase, currentTenant?.id, requestedAction, t]);
 
   // Restore a backup file the operator picks from anywhere on disk. This is the
-  // path a shop on Windows needs so nobody has to hand-copy flo.db over the live
+  // path a shop on Windows needs so nobody has to hand-copy kahera.db over the live
   // database; the app closes and reopens the database itself.
   const handleRestoreFromFile = useCallback(async () => {
     if (!canManageDatabase) return;
@@ -4564,14 +4561,6 @@ export default function SettingsPage() {
               active={activeTab}
               onClick={handleSettingsTabChange}
             />
-            {/* WhatsApp opt-in lives under Operations because the receive-bill
-                workflow is what the cashier touches every time a customer pays. */}
-            <SettingsNavItem
-              label={t('tabWhatsapp')}
-              value="whatsapp"
-              active={activeTab}
-              onClick={handleSettingsTabChange}
-            />
             {canManageQrMenu && (
               <SettingsNavItem
                 label={t('tabQrMenu')}
@@ -5313,7 +5302,7 @@ export default function SettingsPage() {
               >
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
-                    <ChefHat size={20} className="text-muted-foreground" />
+                    <Grid3X3 size={20} className="text-muted-foreground" />
                     <h2 className="font-semibold text-foreground">{t('kitchenStations')}</h2>
                   </div>
                   {canManageKitchenStations && (
@@ -5721,7 +5710,7 @@ export default function SettingsPage() {
                   className="bg-card rounded-xl border border-border p-6"
                 >
                   <div className="flex items-center gap-2 mb-4">
-                    <ChefHat size={20} className="text-muted-foreground" />
+                    <Grid3X3 size={20} className="text-muted-foreground" />
                     <h2 className="font-semibold text-foreground">{t('kds')}</h2>
                   </div>
                   <p className="text-sm text-muted-foreground mb-5">{t('kdsPairingHint')}</p>
@@ -6544,10 +6533,28 @@ export default function SettingsPage() {
                 data-setting-section="privacy-telemetry"
                 className="bg-card rounded-xl border border-border p-6 space-y-4"
               >
-                <div className="flex items-center gap-2">
-                  <Lock size={20} className="text-muted-foreground" />
-                  <div>
-                    <h2 className="font-semibold text-foreground">{t('privacy')}</h2>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Lock size={20} className="text-muted-foreground" />
+                    <div>
+                      <h2 className="font-semibold text-foreground">{t('privacy')}</h2>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3 text-xs">
+                    <button
+                      type="button"
+                      onClick={() => setLegalDialogTab('privacy')}
+                      className="text-brand hover:underline font-medium"
+                    >
+                      Privacy Policy
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLegalDialogTab('terms')}
+                      className="text-muted-foreground hover:text-foreground hover:underline"
+                    >
+                      Terms &amp; Disclaimer
+                    </button>
                   </div>
                 </div>
 
@@ -6799,31 +6806,6 @@ export default function SettingsPage() {
           </TabsContent>
 
           {/* Integrations tab — cloud + OrderFlow + More Apps */}
-          <TabsContent value="whatsapp">
-            <SettingsTabShell>
-              {!whatsappEnabled ? (
-                <WhatsAppEnableCard canManage={canManageWhatsapp} />
-              ) : (
-                <div
-                  data-setting-section="whatsapp-integration"
-                  className="bg-card rounded-xl border border-border p-6 flex items-center justify-between gap-4"
-                >
-                  <div>
-                    <p className="font-semibold text-foreground">{tWhatsappSettings('enabled')}</p>
-                    <p className="text-xs text-muted-foreground mt-0.5">
-                      {tWhatsappSettings('enabledHint')}
-                    </p>
-                  </div>
-                  {canUseWhatsapp && (
-                    <Button asChild variant="outline" size="sm">
-                      <Link href="/whatsapp">{tWhatsappSettings('openConnection')}</Link>
-                    </Button>
-                  )}
-                </div>
-              )}
-            </SettingsTabShell>
-          </TabsContent>
-
           <TabsContent value="mobile-access">
             {canManageMobileAccess ? (
               <SettingsTabShell title={t('tabMobileAccess')}>
@@ -7235,51 +7217,14 @@ export default function SettingsPage() {
                 <h2 className="font-semibold text-foreground mb-4">{t('aboutFloCafe')}</h2>
                 <p className="text-sm text-muted-foreground mb-6">{t('aboutDescription')}</p>
                 <div className="space-y-3">
-                  <a
-                    href="https://github.com/FreeOpenSourcePOS/FloCafe"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <button
+                    type="button"
+                    onClick={() => setLegalDialogTab('privacy')}
                     className="flex items-center gap-2 text-brand hover:underline"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                      <path d="M9 18c-4.51 2-5-2-7-2" />
-                    </svg>
-                    {t('aboutGithub')}
-                  </a>
-                  <a
-                    href="https://flopos.com/"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-brand hover:underline"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <circle cx="12" cy="12" r="10" />
-                      <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                      <path d="M2 12h20" />
-                    </svg>
-                    {t('aboutWebsite')}
-                  </a>
+                    <Lock size={18} />
+                    Kahera POS Privacy Policy &amp; Terms
+                  </button>
                   <a
                     href="https://github.com/receipt-print-hq/escpos-printer-db"
                     target="_blank"
@@ -7575,6 +7520,14 @@ export default function SettingsPage() {
         </div>
       </Tabs>
       {ConfirmDialog}
+      <LegalPolicyDialog
+        open={legalDialogTab !== null}
+        activeTab={legalDialogTab ?? 'privacy'}
+        onTabChange={(tab) => setLegalDialogTab(tab)}
+        onOpenChange={(open) => {
+          if (!open) setLegalDialogTab(null);
+        }}
+      />
 
       {/* Initialize Cloud Disclaimer Dialog */}
       <Dialog open={showInitializeCloudConfirm} onOpenChange={setShowInitializeCloudConfirm}>

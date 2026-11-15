@@ -8,4 +8,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-FloCafe's frontend documentation lives in [`docs/architecture/frontend.md`](../docs/architecture/frontend.md).
+Kahera's frontend documentation lives in [`docs/architecture/frontend.md`](../docs/architecture/frontend.md).

@@ -10,12 +10,12 @@ and with which label variants, without touching renderer specifics.
 | --- | --- | --- | --- |
 | Core layouts (`classic`, `compact`) | code | built-in | code + PrintDocument |
 | Compliance templates | `installed_print_templates` | rows are denormalized children of a tax pack version that passed the 26 activation checks | `escpos-line-template-v1` (line templates) |
-| **Merchant templates (this page)** | `merchant_print_templates` | ordinary tenant data, with no compliance trust | `flocafe-merchant-print-template` (semantic blocks) |
+| **Merchant templates (this page)** | `merchant_print_templates` | ordinary tenant data, with no compliance trust | `kahera-merchant-print-template` (semantic blocks) |
 
 These formats are deliberately not converged. `escpos-line-template-v1` payloads are the
 compliance-pack contract, described in
 [print-templates-compliance.md](print-templates-compliance.md);
-`flocafe-merchant-print-template` is the merchant-facing semantic contract.
+`kahera-merchant-print-template` is the merchant-facing semantic contract.
 `installed_print_templates` must never become generic storage for tenant JSON: its trust model
 depends on every row tracing to a verified pack version.
 
@@ -23,7 +23,7 @@ depends on every row tracing to a verified pack version.
 
 ```jsonc
 {
-  "format": "flocafe-merchant-print-template",  // discriminator, constant
+  "format": "kahera-merchant-print-template",  // discriminator, constant
   "documentType": "receipt",                    // v1 ships receipts only
   "schemaVersion": 1,                           // major-versioned, fail-closed
   "blocks": [
@@ -101,13 +101,13 @@ snapshots the previous payload.
 
 ## Offline transfer format
 
-Templates travel as self-describing `.json` files (`*.flocafe-template.json`), built by
+Templates travel as self-describing `.json` files (`*.kahera-template.json`), built by
 `GET /api/print-templates/:id/export` and consumed by
 `POST /api/print-templates/import`. Both are owner-only.
 
 ```jsonc
 {
-  "format": "flocafe-merchant-print-template",      // envelope discriminator, constant
+  "format": "kahera-merchant-print-template",      // envelope discriminator, constant
   "schemaVersion": 1,                               // envelope version, fail-closed on unknown majors
   "exportedAt": "2026-02-14T09:00:00.000Z",         // ISO-8601
   "appVersion": "3.3.0",                           // optional, informational

@@ -6,7 +6,7 @@ import * as path from 'node:path';
 const Module = require('module');
 const originalLoad = Module._load;
 const testDir = fs.mkdtempSync(path.join(os.tmpdir(), 'flo-posthog-service-'));
-process.env.FLO_E2E_DB_PATH = path.join(testDir, 'flo.db');
+process.env.FLO_E2E_DB_PATH = path.join(testDir, 'kahera.db');
 
 interface CapturedEvent {
   distinctId?: string;

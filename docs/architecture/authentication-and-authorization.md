@@ -1,6 +1,6 @@
 # Authentication and authorization
 
-FloCafe authorizes in the backend. The renderer renders, and never decides. This page describes the
+Kahera authorizes in the backend. The renderer renders, and never decides. This page describes the
 authentication lifecycle, the shape of the authorization surface, the configurable permission
 layer, and the boundaries the product deliberately leaves open.
 
@@ -11,7 +11,7 @@ that constrain authorization, see
 
 ## Roles
 
-FloCafe has five fixed staff identities, declared in
+Kahera has five fixed staff identities, declared in
 [`shared/role-permissions.ts`](../../shared/role-permissions.ts): `owner`, `manager`, `cashier`,
 `server`, and `chef`. The identity a request acts under is read from the `users.role` column at
 request time, not from the token, and there is no role editor — an install cannot add a sixth
@@ -74,7 +74,7 @@ otherwise reads the secret from Electron `safeStorage` (the encrypted `jwt-secre
 user-data directory) in packaged builds, generating one on first launch. The `jwt_secret` settings row then holds only
 the marker `safe-storage:v1`; a packaged install whose row still holds a plaintext secret is migrated on its
 first read. Where OS encryption is unavailable, in unpackaged development runs, and in the Electron-less dev server,
-the secret stays in the `jwt_secret` settings row so development runs sharing `flo.db` remain compatible. If an
+the secret stays in the `jwt_secret` settings row so development runs sharing `kahera.db` remain compatible. If an
 unpackaged development run encounters the `safe-storage:v1` marker, it recovers the secret from development secure
 storage back into SQLite so `node dev-server.js` continues to function. If the
 secure file becomes unreadable, a new secret is generated and existing sessions end. The value is cached in a
@@ -401,7 +401,7 @@ depletion instead of guessing at quantities.
 ## Boundaries we do not harden
 
 These are deliberate product decisions, not gaps that were overlooked. Each one is a place where
-FloCafe relies on the deployment environment rather than on the application.
+Kahera relies on the deployment environment rather than on the application.
 
 **LAN traffic is unencrypted.** The API server binds `0.0.0.0` and speaks HTTP and unencrypted
 WebSocket. The CORS origin check restricts which browser origins may call the API, and CORS is not

@@ -1,6 +1,6 @@
 # Data and migrations
 
-FloCafe stores everything in one SQLite file managed with `better-sqlite3`. Schema change is
+Kahera stores everything in one SQLite file managed with `better-sqlite3`. Schema change is
 append-only and versioned. This page covers where the file lives, how a version becomes a
 migration, what protects customer data on the way, and how to verify all of it.
 
@@ -16,7 +16,7 @@ sections below are the parts a contributor needs in order to change it safely.
 2. `app.getPath('userData')` in a packaged build.
 3. The project root in an unpackaged run, computed from the compiled output location.
 
-The file is named `flo.db`. The backup directory is `backups/` under `userData`, and the
+The file is named `kahera.db`. The backup directory is `backups/` under `userData`, and the
 first-start marker is `.flo-db-initialized` under `userData`.
 
 ## Connection pragmas
@@ -57,11 +57,11 @@ flowchart TB
   B -->|"yes"| C["recover journal:<br/>restore or commit staged file"]
   B -->|"no"| D
   C --> D
-  D{"packaged start and<br/>flo.db missing but<br/>.flo-db-initialized present?"}
+  D{"packaged start and<br/>kahera.db missing but<br/>.flo-db-initialized present?"}
   D -->|"yes"| E["THROW: database missing<br/>refuse silent recreation"]
   D -->|"no"| P{"non-mutating preflight:<br/>user_version or _flo_meta ><br/>highest MIGRATIONS?"}
   P -->|"newer than build"| H["THROW SchemaVersionMismatchError<br/>enter downgrade recovery flow"]
-  P -->|"supported"| F["open flo.db<br/>WAL, synchronous NORMAL,<br/>busy_timeout 5000,<br/>foreign_keys OFF"]
+  P -->|"supported"| F["open kahera.db<br/>WAL, synchronous NORMAL,<br/>busy_timeout 5000,<br/>foreign_keys OFF"]
   F --> G{"user_version or _flo_meta ><br/>highest MIGRATIONS?"}
   G -->|"newer than build"| H
   G -->|"equal"| J["integrity checks and repairs"]
@@ -82,9 +82,9 @@ data:
    creating a fresh empty file. A silently recreated empty database would look like a working POS
    with no orders. The error tells the user to restore from a backup. A genuinely fresh install has
    no marker and proceeds normally.
-2. **A database newer than the build.** Before opening `flo.db` read-write, `initDatabase` reads the
+2. **A database newer than the build.** Before opening `kahera.db` read-write, `initDatabase` reads the
    SQLite header (including committed page-1 `user_version` frames in any active `-wal`) and inspects
-   both `user_version` and any canonical `_flo_meta.schema_version` stamp without mutating `flo.db`
+   both `user_version` and any canonical `_flo_meta.schema_version` stamp without mutating `kahera.db`
    or creating sidecar files in `userData` (probing sidecar-free databases read-only in place, staging
    databases with active `-wal`, `-shm`, or `-journal` sidecars in `os.tmpdir()` with fallback to a
    private `.flo-db-stage-*` directory on the database volume when `os.tmpdir()` cannot be written,
@@ -115,23 +115,23 @@ data:
      `_flo_meta`, core tables, foreign keys, and the inventory ledger or pre-v85 stock snapshot)
      rather than trusting filenames, and lists all candidates with
      `schemaVersion <= getLatestSupportedSchemaVersion()`. When no compatible valid backup exists,
-     the dialog reports whether backups are missing, require a newer FloCafe version, or failed
+     the dialog reports whether backups are missing, require a newer Kahera version, or failed
      validation, while keeping update, folder-open, and exit actions available. Restoring a selected
      backup requires explicit confirmation warning that orders, payments, inventory changes, and
      settings recorded after that backup are absent from the restored database and stating the
      archive path (`backups/flo-preserved-newer-v<version>-<timestamp>.db`, with `-<n>` appended on
      collision).
      Cancelling aborts without touching any files. On confirmation,
-     `restoreCompatibleBackupForDowngrade` refuses an active `flo.db-journal` rollback journal before
+     `restoreCompatibleBackupForDowngrade` refuses an active `kahera.db-journal` rollback journal before
      archiving, writing a replacement journal, or modifying any files so uncommitted journal state is
      neither lost nor replayed into the backup, advising recovery through a compatible newer build.
      When no active rollback journal is present, it re-validates the staged backup under the
-     maintenance lock, preserves `flo.db` and any `-wal` and `-shm` sidecars in `backups/`, records a
+     maintenance lock, preserves `kahera.db` and any `-wal` and `-shm` sidecars in `backups/`, records a
      replacement journal, clears active database and sidecar files, migrates an older compatible
      backup forward to the supported schema without writing a duplicate pre-migration auto-backup,
      updates `_flo_meta`, rotates the JWT signing secret, clears pairing tokens/codes, Google Drive
      bindings, and in-memory auth/JWT caches, repairs sequences, and resumes normal `initialize()`
-     startup. If validation or replacement fails, it rolls `flo.db` and its sidecars back from the
+     startup. If validation or replacement fails, it rolls `kahera.db` and its sidecars back from the
      journal while keeping the preserved archive in `backups/` and presents an error dialog returning
      to recovery options, opening `backups/`, or exiting.
    - **Exit** - runs cleanup and exits with code `0` without modifying any files.
@@ -188,7 +188,7 @@ After migrations and with `foreign_keys` re-enabled, startup runs:
 | List backups | `listBackups(options?)` | Reports file name, path, size, creation time, `manual` or `auto` kind, and the schema version when readable. Supports cursor pagination (`limit`, `cursor`) via `listBackupsPage()`. |
 | Discover downgrade backups | `discoverDowngradeBackupsAsync(options?)` | Prefilters SQLite headers and validates `.db` files in `backups/` by SQLite content and integrity (yielding to the event loop between candidates and honoring `options?.signal`), classifying compatible (`<= getLatestSupportedSchemaVersion()`), newer-incompatible, and corrupt/invalid candidates. |
 | Restore a backup | `restoreBackup(backupPath, forceDirect?, signal?)` | Also under the maintenance lock. |
-| Restore compatible backup on downgrade | `restoreCompatibleBackupForDowngrade(backupPath, options?)` | Under the maintenance lock; refuses an active `flo.db-journal` rollback journal without mutating files, otherwise preserves the newer database and `-wal`/`-shm` sidecars in `backups/` and replaces `flo.db` via the replacement journal. |
+| Restore compatible backup on downgrade | `restoreCompatibleBackupForDowngrade(backupPath, options?)` | Under the maintenance lock; refuses an active `kahera.db-journal` rollback journal without mutating files, otherwise preserves the newer database and `-wal`/`-shm` sidecars in `backups/` and replaces `kahera.db` via the replacement journal. |
 
 Backup, restore, and wipe are serialised by one lock. Two of them running at once is the failure
 mode that corrupts a database, so any new entry point in this area must take the same lock.
@@ -244,7 +244,7 @@ loss. Retention failure is logged and never fails the committed restore.
 
 ### Daily local backup
 
-`main/services/local-backup.ts` writes one backup a day to `Documents/FloCafe/Backups`, outside
+`main/services/local-backup.ts` writes one backup a day to `Documents/Kahera/Backups`, outside
 `userData`, so it survives a data wipe, a reinstall, and an uninstall. It is on unless
 `local_backup_enabled` is `'false'`. A check runs two minutes after startup and then hourly; it calls
 `createBackup()` when the newest file is at least 24 hours old, and skips a database with
@@ -275,7 +275,7 @@ replays it on the next start: an interrupted replacement clears active `-wal`, `
 downgrade journal, falling back to in-place read-only snapshot verification when staging encounters
 storage errors), using `.cleanup-<id>` copies during artifact removal, and startup removes any
 stranded `.flo-db-stage-*` directories. If a `committed` journal is retained for Google Drive
-invalidation while `flo.db` has a schema newer than the running build, replay leaves `flo.db` and
+invalidation while `kahera.db` has a schema newer than the running build, replay leaves `kahera.db` and
 the journal untouched so the preflight raises `SchemaVersionMismatchError` rather than rolling back
 the newer database. `isLiveDatabaseTarget` prevents a replacement from overwriting the live database
 or a hard link to it.

@@ -47,6 +47,41 @@ function rebuildBetterSqlite3() {
   );
 }
 
+function canLoadBetterSqlite3InCurrentNode() {
+  if (process.env.FORCE_ELECTRON_NODE === '1') return false;
+  try {
+    const Database = require('better-sqlite3');
+    const db = new Database(':memory:');
+    db.close();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+if (canLoadBetterSqlite3InCurrentNode()) {
+  const result = spawnSync(
+    process.execPath,
+    [
+      tsNodeBin,
+      '--transpile-only',
+      '-P',
+      'tests/tsconfig.json',
+      ...args,
+    ],
+    {
+      stdio: 'inherit',
+      env: process.env,
+      timeout: 600_000,
+    },
+  );
+  if (result.error || result.signal) {
+    console.error(result.error);
+    process.exit(1);
+  }
+  process.exit(result.status ?? 1);
+}
+
 let sqliteCheck = verifyBetterSqlite3();
 if (!sqliteCheck.ok) {
   console.warn('[test-runner] better-sqlite3 failed to load in Electron.');

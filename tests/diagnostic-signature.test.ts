@@ -48,7 +48,7 @@ function main() {
   const CUSTOMER_NAME = 'Rajesh Kumar';
   const PHONE = '9876543210';
   const AMOUNT = '1250.50';
-  const FILE_PATH = '/Users/pos/flo.db';
+  const FILE_PATH = '/Users/pos/kahera.db';
 
   console.log('\n1. A message carrying customer data produces a signature carrying none of it');
   const leaky = deriveDiagnosticSignature({
@@ -752,7 +752,7 @@ function main() {
       'SQLITE_READONLY_DBMOVED classifies as read_only',
     ],
     [
-      { code: 'EACCES', message: 'EACCES: permission denied, open /Users/pos/flo.db' },
+      { code: 'EACCES', message: 'EACCES: permission denied, open /Users/pos/kahera.db' },
       'read_only',
       'EACCES classifies as read_only',
     ],
@@ -794,7 +794,7 @@ function main() {
       'SQLITE_ERROR with missing column classifies as schema_or_migration',
     ],
     [
-      { code: 'SQLITE_ERROR', message: 'SQL logic error along /Users/pos/flo.db' },
+      { code: 'SQLITE_ERROR', message: 'SQL logic error along /Users/pos/kahera.db' },
       'unknown',
       'generic SQLITE_ERROR without schema issue classifies as unknown',
     ],

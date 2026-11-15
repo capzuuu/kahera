@@ -28,7 +28,7 @@ matching name alias runs on one of the two generic profiles chosen by paper widt
 
 To determine which profile a printer actually resolves to:
 
-1. In FloCafe, open **Settings -> Printers**, add the printer, and save it.
+1. In Kahera, open **Settings -> Printers**, add the printer, and save it.
 2. Read the resolved `profile_id` (and optional `configured_profile_id`) from the stored printer
    row, or call the profile listing endpoint that the printer settings page uses.
 3. If it resolved to a generic profile but you expected a specific one, the name did not match any
@@ -160,12 +160,12 @@ acted on.
 
 - **Date:** YYYY-MM-DD
 - **Tester:**
-- **Platform and version:** e.g. Ubuntu 24.04, FloCafe 3.x.y
+- **Platform and version:** e.g. Ubuntu 24.04, Kahera 3.x.y
 - **Printer make and model:**
 - **Connection type:** network / CUPS / USB / Windows / WebUSB
 - **Paper width:** e.g. 80mm, 42 columns
 - **Resolved profile id:**
-- **Name entered in FloCafe:**
+- **Name entered in Kahera:**
 
 | Test | Result | Notes |
 | --- | --- | --- |

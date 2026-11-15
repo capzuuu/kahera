@@ -1279,8 +1279,8 @@ console.log('\n✅ Test 2: Compact receipt (80mm, 48 cols)');
   assert('renders UPI payment', text.includes('UPI') && text.includes('₹450.00'));
   assert('renders tax registration number', text.includes('TAXID-0001'));
   assert(
-    'renders non-configurable FloPOS footer',
-    text.includes('Powered by FloPOS') && text.includes('(flopos.com)'),
+    'renders non-configurable Kahera footer',
+    text.includes('Powered by Kahera POS'),
   );
   const rowLines = visiblePreview(buf, 48).split('\n');
   const longRowIndex = rowLines.findIndex((l) => l.includes('Very Long Product Name That'));
@@ -1453,8 +1453,8 @@ console.log('\n✅ Test 4: Classic receipt template');
   assert('renders business name', text.includes('Flo Test Cafe'));
   assert('renders item and total', text.includes('Cheeseburger') && text.includes('₹950.00'));
   assert(
-    'renders non-configurable FloPOS footer',
-    text.includes('Powered by FloPOS') && text.includes('(flopos.com)'),
+    'renders non-configurable Kahera footer',
+    text.includes('Powered by Kahera POS'),
   );
   assert('ends with cut', bytesContain(buf, [GS, 0x56, 0x00]));
 
@@ -1473,8 +1473,8 @@ console.log('\n✅ Test 5: Tax-specific labels fall back to the default template
     !text.includes('TAX INVOICE'),
   );
   assert(
-    'renders non-configurable FloPOS footer',
-    text.includes('Powered by FloPOS') && text.includes('(flopos.com)'),
+    'renders non-configurable Kahera footer',
+    text.includes('Powered by Kahera POS'),
   );
 
   console.log('\n   — Rendered detailed fallback —');
@@ -1679,8 +1679,8 @@ console.log('\n✅ Test 7: Test page builder');
   const buf80 = buildTestPage('80mm');
   const buf58 = buildTestPage('58mm');
   const xprinter = buildTestPage('80mm', 'partial');
-  assert('80mm test page renders title', buf80.toString('utf8').includes('Flo Printer Test'));
-  assert('58mm test page renders title', buf58.toString('utf8').includes('Flo Printer Test'));
+  assert('80mm test page renders title', buf80.toString('utf8').includes('Kahera Printer Test'));
+  assert('58mm test page renders title', buf58.toString('utf8').includes('Kahera Printer Test'));
   assert(
     '80mm test page reports correct column width',
     buf80.toString('utf8').includes('Columns: 48'),

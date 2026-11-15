@@ -161,7 +161,7 @@ async function scenarioCrashInTheWriteCacheWindow(): Promise<void> {
     'at the moment of death the module could not serve a secret it had not read back from the database, so no token could be signed with a value that exists nowhere',
   );
 
-  const dbPath = path.join(dir, 'flo.db');
+  const dbPath = path.join(dir, 'kahera.db');
   const rowAfterCrash = readSecretRow(dbPath);
   assertEqualOrThrow(rowAfterCrash?.value, evidence.inserted, 'the killed process left exactly one secret on disk');
 
@@ -306,7 +306,7 @@ async function scenarioConcurrentFirstLaunchAgrees(): Promise<void> {
     'both processes end up signing and verifying with the same secret',
   );
 
-  const stored = readSecretRow(path.join(dir, 'flo.db'));
+  const stored = readSecretRow(path.join(dir, 'kahera.db'));
   assertOrThrow(SECRET_PATTERN.test(stored!.value), `the raced secret keeps its format and length (${stored!.value})`);
   assertEqualOrThrow(stored?.value, winners[0].first.secret, 'the shared secret is the one the database stored');
   assertEqualOrThrow(winners[0].second.secret, winners[0].first.secret, 'the winning process keeps serving the secret it stored');

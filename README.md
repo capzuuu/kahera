@@ -1,39 +1,39 @@
 <div align="center">
-  <h1>FloCafe</h1>
+  <h1>Kahera</h1>
   <p><a href="README.es.md">Español</a> · <a href="README.pt.md">Português</a> · <a href="README.fr.md">Français</a> · <a href="README.tr.md">Türkçe</a> · <a href="README.fil.md">Filipino</a> · <a href="README.de.md">Deutsch</a> · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ar.md">العربية</a> · <a href="README.ur.md">اردو</a></p>
   <p><strong>Free, open-source, offline-first point of sale for cafés, restaurants, and small kitchens.</strong></p>
   <p>
-    <a href="https://flopos.com">Website</a> ·
-    <a href="https://github.com/FreeOpenSourcePOS/FloCafe/releases">Download</a> ·
-    <a href="https://github.com/FreeOpenSourcePOS/FloCafe/issues">Report a bug</a>
+    <a href="https://kaherapos.com">Website</a> ·
+    <a href="https://github.com/FreeOpenSourcePOS/Kahera/releases">Download</a> ·
+    <a href="https://github.com/FreeOpenSourcePOS/Kahera/issues">Report a bug</a>
   </p>
   <p>
-    <a href="https://github.com/FreeOpenSourcePOS/FloCafe/releases"><img src="https://img.shields.io/github/v/release/FreeOpenSourcePOS/FloCafe?label=latest%20release" alt="Latest release"></a>
-    <a href="https://github.com/FreeOpenSourcePOS/FloCafe/releases"><img src="https://img.shields.io/github/downloads/FreeOpenSourcePOS/FloCafe/total?label=release%20downloads" alt="Total release downloads"></a>
-    <a href="https://github.com/FreeOpenSourcePOS/FloCafe/blob/main/LICENSE"><img src="https://img.shields.io/github/license/FreeOpenSourcePOS/FloCafe" alt="MIT License"></a>
+    <a href="https://github.com/FreeOpenSourcePOS/Kahera/releases"><img src="https://img.shields.io/github/v/release/FreeOpenSourcePOS/Kahera?label=latest%20release" alt="Latest release"></a>
+    <a href="https://github.com/FreeOpenSourcePOS/Kahera/releases"><img src="https://img.shields.io/github/downloads/FreeOpenSourcePOS/Kahera/total?label=release%20downloads" alt="Total release downloads"></a>
+    <a href="https://github.com/FreeOpenSourcePOS/Kahera/blob/main/LICENSE"><img src="https://img.shields.io/github/license/FreeOpenSourcePOS/Kahera" alt="MIT License"></a>
     <img src="https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-blue" alt="Windows, macOS, and Linux">
-    <a href="https://github.com/FreeOpenSourcePOS/FloCafe/actions/workflows/ci.yml"><img src="https://github.com/FreeOpenSourcePOS/FloCafe/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
+    <a href="https://github.com/FreeOpenSourcePOS/Kahera/actions/workflows/ci.yml"><img src="https://github.com/FreeOpenSourcePOS/Kahera/actions/workflows/ci.yml/badge.svg" alt="CI status"></a>
   </p>
 </div>
 
 <p align="center">
-  <img src="docs/images/flo-cafe-pos.webp" alt="FloCafe POS screen showing product selection and an active dine-in order" width="100%">
+  <img src="docs/images/kahera-pos.webp" alt="Kahera POS screen showing product selection and an active dine-in order" width="100%">
 </p>
 
-FloCafe runs directly on the business's own computer. Orders, customers, receipts, and backups are stored in a local SQLite database, allowing counter service and kitchen displays to continue operating without an internet connection. No hosted or cloud account is required for core POS operation. Optional integrations—such as Google Drive backup, WhatsApp bill delivery, and cloud-connected reporting—can be enabled when needed.
+Kahera runs directly on the business's own computer. Orders, customers, receipts, and backups are stored in a local SQLite database, allowing counter service and kitchen displays to continue operating without an internet connection. No hosted or cloud account is required for core POS operation. Optional integrations—such as Google Drive backup, WhatsApp bill delivery, and cloud-connected reporting—can be enabled when needed.
 
-## Get FloCafe
+## Get Kahera
 
-Download the latest installer from [GitHub Releases](https://github.com/FreeOpenSourcePOS/FloCafe/releases), or install through your platform's app store:
+Download the latest installer from [GitHub Releases](https://github.com/FreeOpenSourcePOS/Kahera/releases), or install through your platform's app store:
 
 <p>
-  <a href="https://apps.apple.com/in/app/flo-cafe/id6763136018">
+  <a href="https://apps.apple.com/in/app/kahera/id6763136018">
     <img src="https://img.shields.io/badge/Mac_App_Store-Download-black?logo=apple&style=for-the-badge" alt="Download on the Mac App Store">
   </a>
   <a href="https://apps.microsoft.com/detail/9n1md6585p4q">
     <img src="https://img.shields.io/badge/Microsoft_Store-Download-0078D4?logo=microsoft&style=for-the-badge" alt="Download from Microsoft Store">
   </a>
-  <a href="https://snapcraft.io/flocafe">
+  <a href="https://snapcraft.io/kahera">
     <img src="https://img.shields.io/badge/Snap-Install-82BEA0?logo=snapcraft&logoColor=white&style=for-the-badge" alt="Install from the Snap Store">
   </a>
 </p>
@@ -51,9 +51,9 @@ installation and support](docs/linux.md).
 | Memory           | 4 GB RAM                                                                                       |
 | Storage          | 500 MB free space, plus room for local backups                                                 |
 
-Node.js is only required to develop FloCafe, not to run a packaged release.
+Node.js is only required to develop Kahera, not to run a packaged release.
 
-FloCafe does not build or publish 32-bit installers. A terminal that can only
+Kahera does not build or publish 32-bit installers. A terminal that can only
 run a 32-bit OS can still be used from a lightweight browser, without
 installing the desktop app locally:
 
@@ -71,14 +71,14 @@ App Store and Microsoft Store installs should be removed through the relevant st
 
 ```sh
 # macOS
-curl -fsSL https://github.com/FreeOpenSourcePOS/FloCafe/releases/latest/download/uninstall-macos.sh -o uninstall-macos.sh
+curl -fsSL https://github.com/FreeOpenSourcePOS/Kahera/releases/latest/download/uninstall-macos.sh -o uninstall-macos.sh
 chmod +x uninstall-macos.sh
 ./uninstall-macos.sh
 ```
 
 ```powershell
 # Windows PowerShell
-irm https://github.com/FreeOpenSourcePOS/FloCafe/releases/latest/download/uninstall-windows.ps1 -OutFile uninstall-windows.ps1
+irm https://github.com/FreeOpenSourcePOS/Kahera/releases/latest/download/uninstall-windows.ps1 -OutFile uninstall-windows.ps1
 powershell -ExecutionPolicy Bypass -File .\uninstall-windows.ps1
 ```
 
@@ -93,12 +93,12 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%" valign="top">
       <h3>High-Speed Counter POS</h3>
       <p>Fast, touch-optimized checkout built for busy café rushes. Filter menu categories with a tap, adjust item quantities on the fly, and accept cash or card payments with zero lag.</p>
-      <p><a href="https://flopos.com/documentation/getting-started">Getting started guide &rarr;</a></p>
+      <p><a href="https://kaherapos.com/documentation/getting-started">Getting started guide &rarr;</a></p>
     </td>
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/pos-checkout.gif" type="image/gif">
-        <img src="docs/assets/showcase/pos-checkout.poster.jpg" alt="FloCafe counter POS checkout flow with cart item selection and cash payment confirmation" width="100%">
+        <img src="docs/assets/showcase/pos-checkout.poster.jpg" alt="Kahera counter POS checkout flow with cart item selection and cash payment confirmation" width="100%">
       </picture>
     </td>
   </tr>
@@ -110,7 +110,7 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/addon-modifiers.gif" type="image/gif">
-        <img src="docs/assets/showcase/addon-modifiers.poster.jpg" alt="FloCafe modal modifier selector choosing oat milk and espresso shots" width="100%">
+        <img src="docs/assets/showcase/addon-modifiers.poster.jpg" alt="Kahera modal modifier selector choosing oat milk and espresso shots" width="100%">
       </picture>
     </td>
   </tr>
@@ -118,12 +118,12 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%" valign="top">
       <h3>Real-Time Kitchen Display (KDS)</h3>
       <p>Keep kitchen staff and baristas in sync with a digital ticket board. Drag orders from waiting to preparing to ready, track prep times, and eliminate lost paper tickets.</p>
-      <p><a href="https://flopos.com/documentation/kitchen-display">Kitchen display guide &rarr;</a></p>
+      <p><a href="https://kaherapos.com/documentation/kitchen-display">Kitchen display guide &rarr;</a></p>
     </td>
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/kds-kanban.gif" type="image/gif">
-        <img src="docs/assets/showcase/kds-kanban.poster.jpg" alt="FloCafe standalone Kitchen Display System Kanban board tracking tickets across prep stages" width="100%">
+        <img src="docs/assets/showcase/kds-kanban.poster.jpg" alt="Kahera standalone Kitchen Display System Kanban board tracking tickets across prep stages" width="100%">
       </picture>
     </td>
   </tr>
@@ -135,7 +135,7 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/floorplan-tables.gif" type="image/gif">
-        <img src="docs/assets/showcase/floorplan-tables.poster.jpg" alt="FloCafe interactive floor plan and table turnover monitoring" width="100%">
+        <img src="docs/assets/showcase/floorplan-tables.poster.jpg" alt="Kahera interactive floor plan and table turnover monitoring" width="100%">
       </picture>
     </td>
   </tr>
@@ -147,7 +147,7 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/server-app.gif" type="image/gif">
-        <img src="docs/assets/showcase/server-app.poster.jpg" alt="FloCafe handheld mobile waiter app taking orders table-side" width="100%">
+        <img src="docs/assets/showcase/server-app.poster.jpg" alt="Kahera handheld mobile waiter app taking orders table-side" width="100%">
       </picture>
     </td>
   </tr>
@@ -159,7 +159,7 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/split-payments.gif" type="image/gif">
-        <img src="docs/assets/showcase/split-payments.poster.jpg" alt="FloCafe equal share split payment calculator dividing check across diners" width="100%">
+        <img src="docs/assets/showcase/split-payments.poster.jpg" alt="Kahera equal share split payment calculator dividing check across diners" width="100%">
       </picture>
     </td>
   </tr>
@@ -171,7 +171,7 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/recipe-inventory.gif" type="image/gif">
-        <img src="docs/assets/showcase/recipe-inventory.poster.jpg" alt="FloCafe inventory management with supplies, recipe portions, and stock movement logs" width="100%">
+        <img src="docs/assets/showcase/recipe-inventory.poster.jpg" alt="Kahera inventory management with supplies, recipe portions, and stock movement logs" width="100%">
       </picture>
     </td>
   </tr>
@@ -179,12 +179,12 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
     <td width="50%" valign="top">
       <h3>Thermal Receipt &amp; Kitchen Printing</h3>
       <p>Print clean customer receipts and kitchen order slips on standard 58mm or 80mm thermal receipt printers over USB or local network, complete with itemized tax summaries.</p>
-      <p><a href="https://flopos.com/documentation/printers">Printer configuration guide &rarr;</a></p>
+      <p><a href="https://kaherapos.com/documentation/printers">Printer configuration guide &rarr;</a></p>
     </td>
     <td width="50%">
       <picture>
         <source srcset="docs/assets/showcase/thermal-printing.gif" type="image/gif">
-        <img src="docs/assets/showcase/thermal-printing.poster.jpg" alt="FloCafe thermal printer test interface for 58mm and 80mm receipts and KOT tickets" width="100%">
+        <img src="docs/assets/showcase/thermal-printing.poster.jpg" alt="Kahera thermal printer test interface for 58mm and 80mm receipts and KOT tickets" width="100%">
       </picture>
     </td>
   </tr>
@@ -205,19 +205,19 @@ Both scripts ask whether to keep application data. Do not choose their data-purg
 
 ## Project status
 
-FloCafe is actively developed and already used in real deployments. Core customer data and upgrade safety are treated carefully, including explicit database migrations and recovery mechanisms. Some internal and extension-facing architecture is still evolving, so implementation details and internal contracts may change as the project matures.
+Kahera is actively developed and already used in real deployments. Core customer data and upgrade safety are treated carefully, including explicit database migrations and recovery mechanisms. Some internal and extension-facing architecture is still evolving, so implementation details and internal contracts may change as the project matures.
 
 ## Offline-first by design
 
 Core POS operation and local data are offline-first. Order entry, billing, KDS coordination, and receipt printing do not depend on internet access or external cloud services.
 
 - **Data location:** The SQLite database and local backups reside in the operating system user-data directory, separate from installed application binaries. Standard in-place application updates do not remove them. As a best practice, create a manual backup before reinstalling, moving to a new machine, or changing distribution channels.
-- **Pre-migration backups:** FloCafe automatically creates a timestamped database backup before running schema migrations.
+- **Pre-migration backups:** Kahera automatically creates a timestamped database backup before running schema migrations.
 - **Optional network features:** Services such as Google Drive backups, WhatsApp bill delivery, and cloud reporting communicate over the network only when explicitly configured and enabled by the store owner.
 
 ## Languages and regional support
 
-FloCafe includes UI translations for:
+Kahera includes UI translations for:
 
 - English
 - Spanish
@@ -254,7 +254,7 @@ FloCafe includes UI translations for:
 
 UI language is independent of store country and regional settings, and tax calculation rules remain a separate concern. For details on contributing translations or adding languages, see the [Internationalization and translation guide](docs/architecture/internationalization.md).
 
-FloCafe ships with 131 country profiles covering 109 currencies. Each profile sets a default currency, locale, and setup timezone; store owners can override the timezone during setup or later in Settings.
+Kahera ships with 131 country profiles covering 109 currencies. Each profile sets a default currency, locale, and setup timezone; store owners can override the timezone during setup or later in Settings.
 
 <details>
 <summary>Supported country profiles, currencies, and default timezones</summary>
@@ -397,9 +397,9 @@ FloCafe ships with 131 country profiles covering 109 currencies. Each profile se
 
 ## Tax support
 
-FloCafe includes a generic calculation engine and supports signed, versioned country tax packs for regional rules, tax categories, and rounding policies. Country coverage is expanding through the catalog, and availability varies. Operators can also configure manual tax rules and rates locally.
+Kahera includes a generic calculation engine and supports signed, versioned country tax packs for regional rules, tax categories, and rounding policies. Country coverage is expanding through the catalog, and availability varies. Operators can also configure manual tax rules and rates locally.
 
-> **Notice:** FloCafe is software, not legal or tax advice. Tax packs and configuration tools do not by themselves certify compliance with local regulations. Operators remain responsible for verifying the requirements that apply to their business.
+> **Notice:** Kahera is software, not legal or tax advice. Tax packs and configuration tools do not by themselves certify compliance with local regulations. Operators remain responsible for verifying the requirements that apply to their business.
 
 For pack authoring, validation, and schema details, see the [Tax packs developer guide](docs/reference/tax-packs.md).
 
@@ -408,8 +408,8 @@ For pack authoring, validation, and schema details, see the [Tax packs developer
 Setting up a local development environment requires Node.js 22 or later:
 
 ```sh
-git clone https://github.com/FreeOpenSourcePOS/FloCafe.git
-cd FloCafe
+git clone https://github.com/FreeOpenSourcePOS/Kahera.git
+cd Kahera
 npm install
 npm run dev
 ```
@@ -442,7 +442,7 @@ Contributions are welcome. Please check [CONTRIBUTING.md](CONTRIBUTING.md) befor
 - **Small bug fixes, documentation improvements, and focused tests** can be started freely.
 - **New features, database schema changes, and architectural refactors** require maintainer discussion and approval before implementation.
 
-If FloCafe is useful to you, consider starring the repository.
+If Kahera is useful to you, consider starring the repository.
 
 ## Help and documentation
 
@@ -451,9 +451,9 @@ If FloCafe is useful to you, consider starring the repository.
 - **Linux setup & support:** [docs/linux.md](docs/linux.md)
 - **Internationalization & translations:** [docs/architecture/internationalization.md](docs/architecture/internationalization.md)
 - **Google Drive backup setup:** [docs/google-drive-setup.md](docs/google-drive-setup.md)
-- **Bug reports & feature proposals:** [GitHub Issues](https://github.com/FreeOpenSourcePOS/FloCafe/issues)
-- **General questions & ideas:** [GitHub Discussions](https://github.com/FreeOpenSourcePOS/FloCafe/discussions)
+- **Bug reports & feature proposals:** [GitHub Issues](https://github.com/FreeOpenSourcePOS/Kahera/issues)
+- **General questions & ideas:** [GitHub Discussions](https://github.com/FreeOpenSourcePOS/Kahera/discussions)
 
 ## License
 
-FloCafe is open-source software licensed under the [MIT License](LICENSE).
+Kahera is open-source software licensed under the [MIT License](LICENSE).

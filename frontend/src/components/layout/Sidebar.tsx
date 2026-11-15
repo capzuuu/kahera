@@ -13,9 +13,7 @@ import {
   UserCog,
   Settings,
   LogOut,
-  ChefHat,
   UserCircle,
-  MessageCircle,
   LifeBuoy,
   ChevronUp,
   Sun,
@@ -88,13 +86,6 @@ const ALL_NAV_ITEMS: NavItem[] = [
     businessTypes: null,
   },
   {
-    href: '/whatsapp',
-    labelKey: 'whatsapp',
-    icon: MessageCircle,
-    permission: 'whatsapp.use',
-    businessTypes: null,
-  },
-  {
     href: '/products',
     labelKey: 'products',
     icon: Package,
@@ -125,7 +116,7 @@ const ALL_NAV_ITEMS: NavItem[] = [
   {
     href: '/settings?tab=kds',
     labelKey: 'kds',
-    icon: ChefHat,
+    icon: Grid3X3,
     permission: 'kitchen.stations.manage',
     businessTypes: ['restaurant'],
   },
@@ -155,8 +146,7 @@ const ALL_NAV_ITEMS: NavItem[] = [
 export default function AppSidebar() {
   const pathname = usePathname();
   const { user, currentTenant, logout, lock } = useAuthStore();
-  const { tablesRequired, kdsEnabled, whatsappEnabled, setKdsEnabled, setWhatsappEnabled } =
-    usePosSettingsStore();
+  const { tablesRequired, kdsEnabled, setKdsEnabled } = usePosSettingsStore();
   const { isMobile, setOpenMobile } = useSidebar();
   const t = useTranslations('nav');
   const tAuth = useTranslations('auth');
@@ -184,8 +174,6 @@ export default function AppSidebar() {
     if (item.href === '/tables' && !tablesRequired) return false;
     // Hide KDS settings navigation when KDS is disabled.
     if (item.href === '/settings?tab=kds' && !kdsEnabled) return false;
-    // WhatsApp integration not enabled on this tenant → hide the nav entry.
-    if (item.href === '/whatsapp' && !whatsappEnabled) return false;
     const permitted =
       item.href === '/staff'
         ? tenantCan(currentTenant, 'staff.view') || tenantCan(currentTenant, 'authorization.manage')
@@ -206,7 +194,6 @@ export default function AppSidebar() {
               'database.manage',
               'mobile-access.manage',
               'kitchen.stations.manage',
-              'whatsapp.manage',
             ].some((permission) => tenantCan(currentTenant, permission as PermissionId))
           : tenantCan(currentTenant, item.permission);
     return permitted && (item.businessTypes === null || item.businessTypes.includes(businessType));
@@ -221,16 +208,7 @@ export default function AppSidebar() {
         .then((res) => setKdsEnabled(res.data.setting?.value !== 'false'))
         .catch(() => {});
     }
-    if (tenantCan(currentTenant, 'whatsapp.use')) {
-      // Sync WhatsApp status so the sidebar only shows the entry when enabled.
-      api
-        .get('/whatsapp/status')
-        .then((res) => setWhatsappEnabled(!!res.data?.enabled))
-        .catch(() => {});
-    } else {
-      setWhatsappEnabled(false);
-    }
-  }, [currentTenant, setKdsEnabled, setWhatsappEnabled]);
+  }, [currentTenant, setKdsEnabled]);
 
   useEffect(() => {
     if (!tenantCan(currentTenant, 'cloud.account.manage')) return;

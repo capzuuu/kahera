@@ -787,7 +787,7 @@ async function main() {
     );
 
     const secretPersistenceLeak =
-      "SQLITE_CONSTRAINT_TRIGGER: INSERT INTO orders (notes) VALUES ('SecretVal99') failed on table secret_table_name at /Users/pos/private/flo.db";
+      "SQLITE_CONSTRAINT_TRIGGER: INSERT INTO orders (notes) VALUES ('SecretVal99') failed on table secret_table_name at /Users/pos/private/kahera.db";
     db.prepare(
       `CREATE TRIGGER diagnostics_force_order_create_persistence_failure BEFORE INSERT ON order_items
        BEGIN SELECT RAISE(ABORT, '${secretPersistenceLeak.replace(/'/g, "''")}'); END`,
@@ -847,7 +847,7 @@ async function main() {
     for (const forbidden of [
       'SecretVal99',
       'secret_table_name',
-      '/Users/pos/private/flo.db',
+      '/Users/pos/private/kahera.db',
       'INSERT INTO',
     ]) {
       assert(
@@ -948,7 +948,7 @@ async function main() {
     for (const forbidden of [
       'SecretVal99',
       'secret_table_name',
-      '/Users/pos/private/flo.db',
+      '/Users/pos/private/kahera.db',
       'INSERT INTO',
     ]) {
       assert(
@@ -977,7 +977,7 @@ async function main() {
     for (const forbidden of [
       'SecretVal99',
       'secret_table_name',
-      '/Users/pos/private/flo.db',
+      '/Users/pos/private/kahera.db',
       'INSERT INTO',
     ]) {
       assert(

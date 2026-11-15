@@ -266,7 +266,7 @@ async function runTests() {
       await new Promise((resolve) => setImmediate(resolve));
       assertEqualOrThrow(paperOut.printed.length, 0, 'the printer kept no printed bytes');
       assertOrThrow(
-        Buffer.from(paperOut.received).includes('Flo Printer Test') &&
+        Buffer.from(paperOut.received).includes('Kahera Printer Test') &&
           Buffer.from(paperOut.received).includes('Network / USB test print'),
         'the test page payload was sent before the probe',
       );
